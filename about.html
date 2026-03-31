@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — Sylvain Masclin</title>
+  <meta name="description" content="The story of Sylvain Masclin — from Jurassic Park to Antarctica to UC Merced. Assistant Teaching Professor, LES Department.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy:   #0d2233;
+      --ink:    #1a3a52;
+      --slate:  #4a6d8c;
+      --accent: #FF7E00;
+      --bg:     #f0f8ff;
+      --bg2:    #e8f4ff;
+    }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--ink); line-height: 1.75; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-decoration: none; }
+
+    .skip-link { position: absolute; left: -9999px; top: 1rem; background: var(--accent); color: #fff; padding: 0.5rem 1rem; border-radius: 4px; font-size: 0.875rem; font-weight: 600; z-index: 9999; }
+    .skip-link:focus { left: 1rem; }
+
+    /* NAV */
+    .site-nav { background: var(--navy); border-bottom: 1px solid rgba(255,126,0,0.2); position: sticky; top: 0; z-index: 100; }
+    .site-nav__inner { max-width: 1200px; margin-inline: auto; padding-inline: clamp(1.25rem,4vw,2.5rem); display: flex; align-items: center; gap: 2rem; height: 68px; }
+    .site-nav__brand { flex-shrink: 0; text-decoration: none; line-height: 1.2; }
+    .site-nav__brand-welcome { display: block; font-family: 'Lora', serif; font-size: 0.78rem; font-style: italic; font-weight: 400; color: #f0f8ff; letter-spacing: 0.01em; }
+    .site-nav__brand-name { display: block; font-family: 'Lora', serif; font-size: 1.05rem; font-weight: 700; color: var(--accent); letter-spacing: 0.01em; }
+    .site-nav__links { display: flex; gap: 0.25rem; list-style: none; margin-left: auto; }
+    .site-nav__links a { font-family: 'DM Sans', sans-serif; font-size: 0.875rem; font-weight: 500; color: rgba(240,248,255,0.65); padding: 0.35rem 0.85rem; text-decoration: none; position: relative; transition: color 200ms ease; }
+    .site-nav__links a::after { content: ''; position: absolute; bottom: 1px; left: 0.85rem; right: 0.85rem; height: 1.5px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 280ms ease; border-radius: 1px; }
+    .site-nav__links a:hover { color: #f0f8ff; }
+    .site-nav__links a:hover::after { transform: scaleX(1); }
+    .site-nav__links a.active { color: var(--accent); }
+    .site-nav__links a.active::after { transform: scaleX(1); }
+    .site-nav__toggle { display: none; flex-direction: column; justify-content: center; align-items: center; gap: 5px; width: 40px; height: 40px; background: none; border: none; cursor: pointer; padding: 4px; margin-left: auto; }
+    .site-nav__toggle span { display: block; width: 22px; height: 1.5px; background: rgba(240,248,255,0.7); border-radius: 2px; }
+
+    /* PAGE HEADER */
+    .page-header { background: var(--navy); padding: 4.5rem clamp(1.25rem,4vw,2.5rem) 4rem; overflow: hidden; position: relative; }
+    .page-header::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 80% at 85% 50%, rgba(255,126,0,0.09) 0%, transparent 70%); pointer-events: none; }
+    .page-header__inner { max-width: 1200px; margin-inline: auto; display: flex; align-items: flex-end; justify-content: space-between; gap: 2rem; position: relative; z-index: 1; }
+    .page-header__eyebrow { font-family: 'DM Sans', sans-serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.55rem; }
+    .page-header__title { font-family: 'Lora', serif; font-size: clamp(2.2rem, 5vw, 3.6rem); font-weight: 700; color: #f0f8ff; line-height: 1.1; }
+    .page-header__title em { font-style: italic; color: var(--accent); }
+    .page-header__subtitle { font-family: 'Lora', serif; font-style: italic; font-size: clamp(1rem, 1.8vw, 1.18rem); color: rgba(240,248,255,0.5); margin-top: 0.65rem; line-height: 1.55; }
+    .page-header__deco { flex-shrink: 0; opacity: 0.07; font-family: 'Lora', serif; font-size: clamp(6rem, 14vw, 11rem); font-weight: 700; color: var(--accent); line-height: 1; user-select: none; pointer-events: none; }
+
+    /* KING KONG QUOTE */
+    .quote-hero { background: var(--navy); border-top: 1px solid rgba(255,126,0,0.12); padding: 3rem clamp(1.25rem,4vw,2.5rem); display: flex; align-items: center; justify-content: center; }
+    .quote-hero__inner { max-width: 860px; text-align: center; position: relative; }
+    .quote-hero__mark { font-family: 'Lora', serif; font-size: 7rem; line-height: 0.6; color: var(--accent); opacity: 0.18; display: block; margin-bottom: -0.5rem; user-select: none; }
+    .quote-hero__text { font-family: 'Lora', serif; font-style: italic; font-size: clamp(1.35rem, 3vw, 2rem); color: #f0f8ff; line-height: 1.5; letter-spacing: 0.01em; }
+    .quote-hero__attr { display: block; margin-top: 1rem; font-family: 'DM Sans', sans-serif; font-size: 0.8rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+
+    /* STORY GRID */
+    .story { padding: 5rem clamp(1.25rem,4vw,2.5rem) 6rem; }
+    .story__inner { max-width: 1100px; margin-inline: auto; display: flex; flex-direction: column; gap: 5rem; position: relative; }
+
+    /* subtle vertical spine behind cards */
+    .story__inner::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0; bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, rgba(255,126,0,0.35), rgba(255,126,0,0.05));
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+
+    /* ── CHAPTER CARD ── */
+    .chapter { position: relative; display: grid; gap: 0; }
+
+    /* odd chapters: image left, text right */
+    .chapter:nth-child(odd)  { grid-template-columns: 1fr 1fr; }
+    /* even chapters: text left, image right */
+    .chapter:nth-child(even) { grid-template-columns: 1fr 1fr; }
+
+    /* the image pane */
+    .chapter__visual {
+      position: relative; overflow: hidden;
+      border-radius: 16px 0 0 16px;
+      min-height: 340px;
+    }
+    .chapter:nth-child(even) .chapter__visual {
+      order: 2;
+      border-radius: 0 16px 16px 0;
+    }
+    .chapter__visual img {
+      width: 100%; height: 100%; object-fit: cover; object-position: center;
+      display: block;
+      transition: transform 0.6s ease;
+    }
+    .chapter:hover .chapter__visual img { transform: scale(1.04); }
+
+    /* gradient overlay on image */
+    .chapter:nth-child(odd)  .chapter__visual::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to right, transparent 55%, rgba(240,248,255,0.18) 100%);
+      pointer-events: none;
+    }
+    .chapter:nth-child(even) .chapter__visual::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to left, transparent 55%, rgba(240,248,255,0.18) 100%);
+      pointer-events: none;
+    }
+
+    /* year badge on image */
+    .chapter__badge {
+      position: absolute; top: 1.25rem; left: 1.25rem;
+      background: var(--accent);
+      color: #fff;
+      font-family: 'DM Sans', sans-serif; font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 0.3rem 0.75rem; border-radius: 100px;
+      z-index: 2;
+    }
+    .chapter:nth-child(even) .chapter__badge {
+      left: auto; right: 1.25rem;
+    }
+
+    /* emoji node centred on the seam between image and text */
+    .chapter__node {
+      position: absolute;
+      left: 50%; top: 50%;
+      transform: translate(-50%, -50%);
+      width: 52px; height: 52px; border-radius: 50%;
+      background: var(--bg);
+      border: 3px solid var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; z-index: 10;
+      box-shadow: 0 2px 12px rgba(255,126,0,0.25);
+    }
+
+    /* the text pane */
+    .chapter__body {
+      background: #fff;
+      border-radius: 0 16px 16px 0;
+      padding: 2.5rem 2.75rem;
+      display: flex; flex-direction: column; justify-content: center;
+      box-shadow: 0 4px 30px rgba(13,34,51,0.07);
+    }
+    .chapter:nth-child(even) .chapter__body {
+      order: 1;
+      border-radius: 16px 0 0 16px;
+    }
+
+    .chapter__heading {
+      font-family: 'Lora', serif; font-size: 1.28rem; font-weight: 700;
+      color: var(--navy); line-height: 1.25; margin-bottom: 1rem;
+    }
+    .chapter__text {
+      font-family: 'DM Sans', sans-serif; font-size: 0.97rem;
+      color: var(--ink); line-height: 1.84;
+    }
+    .chapter__text + .chapter__text { margin-top: 0.85rem; }
+    .chapter__text em { font-style: italic; }
+
+    /* FOOTER */
+    .site-footer { background: var(--navy); border-top: 1px solid rgba(255,126,0,0.15); padding: 2.5rem clamp(1.25rem,4vw,2.5rem); }
+    .site-footer__inner { max-width: 1200px; margin-inline: auto; display: flex; align-items: center; justify-content: space-between; gap: 3rem; }
+    .site-footer__left { display: flex; flex-direction: column; }
+    .site-footer__address { font-family: 'DM Sans', sans-serif; font-size: 0.8rem; color: rgba(240,248,255,0.45); line-height: 1.85; font-style: normal; }
+    .site-footer__address strong { color: rgba(240,248,255,0.7); display: block; margin-bottom: 0.35rem; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+    .site-footer__address a { color: rgba(240,248,255,0.45); transition: color 200ms; }
+    .site-footer__address a:hover { color: var(--accent); }
+    .site-footer__copy { display: block; margin-top: 0.75rem; font-family: 'DM Sans', sans-serif; font-size: 0.75rem; color: rgba(240,248,255,0.28); }
+    .site-footer__built { display: block; font-family: 'DM Sans', sans-serif; font-size: 0.7rem; color: rgba(240,248,255,0.18); line-height: 1.5; margin-top: 0.15rem; }
+    .site-footer__logos { display: flex; align-items: center; gap: 2.25rem; flex-shrink: 0; }
+    .site-footer__logo-img { height: 72px; width: auto; display: block; opacity: 0.9; transition: opacity 200ms; }
+    .site-footer__logo-img:hover { opacity: 1; }
+
+    /* RESPONSIVE */
+    @media (max-width: 800px) {
+      .story__inner::before { display: none; }
+      .chapter, .chapter:nth-child(even) { grid-template-columns: 1fr; }
+      .chapter__visual { border-radius: 16px 16px 0 0 !important; min-height: 240px; order: 0 !important; }
+      .chapter__body { border-radius: 0 0 16px 16px !important; order: 1 !important; padding: 1.75rem; }
+      .chapter__badge { left: 1rem !important; right: auto !important; }
+      .chapter__node { top: auto; bottom: -26px; left: 50%; transform: translateX(-50%); }
+    }
+    @media (max-width: 700px) {
+      .site-footer__inner { flex-direction: column; align-items: flex-start; gap: 2rem; }
+      .site-footer__logos { gap: 1.5rem; }
+      .site-footer__logo-img { height: 54px; }
+      .page-header__deco { display: none; }
+    }
+    @media (max-width: 600px) {
+      .site-nav__links { display: none; flex-direction: column; position: absolute; top: 68px; left: 0; right: 0; background: var(--navy); border-bottom: 1px solid rgba(255,126,0,0.15); padding: 1rem 1.5rem; z-index: 99; }
+      .site-nav__links.open { display: flex; }
+      .site-nav__links a { font-size: 1rem; padding: 0.65rem 0; }
+      .site-nav__links a::after { display: none; }
+      .site-nav__toggle { display: flex; }
+      .site-nav__brand-welcome { font-size: 0.7rem; }
+      .site-nav__brand-name { font-size: 0.9rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <nav class="site-nav" aria-label="Main navigation">
+    <div class="site-nav__inner">
+      <a href="index.html" class="site-nav__brand" aria-label="Sylvain Masclin — Home">
+        <span class="site-nav__brand-welcome">Welcome to</span>
+        <span class="site-nav__brand-name">Sylvain Masclin's website</span>
+      </a>
+      <button class="site-nav__toggle" aria-label="Toggle menu" aria-expanded="false" id="nav-toggle">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="site-nav__links" id="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html" class="active">About</a></li>
+        <li><a href="teaching.html">Teaching</a></li>
+        <li><a href="academic.html">Academic</a></li>
+        <li><a href="resources.html">Resources</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main id="main">
+
+    <header class="page-header">
+      <div class="page-header__inner">
+        <div>
+          <p class="page-header__eyebrow">A personal adventure</p>
+          <h1 class="page-header__title"><em>Many</em> years<br>in the making.</h1>
+          <p class="page-header__subtitle">Dinosaurs, ice cores, Antarctic penguins, and a classroom in California's Central Valley.</p>
+        </div>
+        <div class="page-header__deco" aria-hidden="true">SM</div>
+      </div>
+    </header>
+
+    <div class="quote-hero" aria-label="Opening quote">
+      <div class="quote-hero__inner">
+        <span class="quote-hero__mark" aria-hidden="true">&ldquo;</span>
+        <p class="quote-hero__text">What have they got in there, King Kong?</p>
+        <span class="quote-hero__attr">— the question that started it all</span>
+      </div>
+    </div>
+
+    <section class="story" aria-label="Sylvain's story">
+      <div class="story__inner">
+
+        <!-- Chapter 1: Jurassic Park + Grenoble (image LEFT) -->
+        <div class="chapter">
+          <div class="chapter__visual">
+            <span class="chapter__badge">Early 1990s – 2000s</span>
+            <img src="images/JurassicPark.png" alt="Jurassic Park movie poster">
+          </div>
+          <div class="chapter__node" aria-hidden="true">🦕</div>
+          <div class="chapter__body">
+            <h2 class="chapter__heading">It all started with Jurassic Park</h2>
+            <p class="chapter__text">
+              Picture this: a young me, eyes glued to the screen, heart pounding as <em>Jurassic Park</em> (the original, not the "World" series, mind you!) unfolded before my eyes. It was 1993, and while I wasn't exactly living in the dinosaur era, it sure feels like a lifetime ago.
+            </p>
+            <p class="chapter__text">
+              Dr. Alan Grant became my instant role model, and enrolled in an Earth Sciences undergraduate program at Lille, France, to dig up, one day, dinosaur bones just like him. There was just one tiny problem — it involved studying a lot of biology, a subject that, let's just say, wasn't my kind of cheese.
+            </p>
+            <p class="chapter__text">
+              But life finds a way… and I found my true calling under the mentorship of the fantastic Professor Yves Fouquart. Swapping dinosaur bones for climate studies, I ventured into the world of environmental sciences, a field that led me to move to Grenoble to pursue a Master with a focus on paleoclimatology, the science of past climates.
+            </p>
+          </div>
+        </div>
+
+        <!-- Chapter 2: Antarctica (image RIGHT) -->
+        <div class="chapter">
+          <div class="chapter__visual">
+            <span class="chapter__badge">2005</span>
+            <img src="images/PenguinEncounter.png" alt="Encounter with Emperor Penguins at Terre Adélie, Antarctica">
+          </div>
+          <div class="chapter__node" aria-hidden="true">🐧</div>
+          <div class="chapter__body">
+            <h2 class="chapter__heading">Antarctica — the adventure truly begins</h2>
+            <p class="chapter__text">
+              Now, hold onto your butts because this is where the adventure truly begins, in 2005. Picture a 17-month expedition to the end of the world, Terre Adélie, Antarctica. An unforgettable experience at the end of the world, close to the home of Emperor Penguins and many other unique species.
+            </p>
+          </div>
+        </div>
+
+        <!-- Chapter 3: UC Merced (image LEFT) -->
+        <div class="chapter">
+          <div class="chapter__visual">
+            <span class="chapter__badge">2008</span>
+            <img src="images/BlueIce.png" alt="Sylvain Masclin in a blue ice cave in Antarctica">
+          </div>
+          <div class="chapter__node" aria-hidden="true">🎓</div>
+          <div class="chapter__body">
+            <h2 class="chapter__heading">UC Merced — when you gotta go, you gotta go</h2>
+            <p class="chapter__text">
+              Fast forward to 2008, I packed my bags and headed to Merced to start my doctorate in Environmental Systems, with research focusing on atmospheric and snow chemistry at the WAIS-Divide ice-core campsite. When you gotta go, you gotta go…
+            </p>
+            <p class="chapter__text">
+              After earning my doctorate, I decided to stay around as a lecturer in the Life and Environmental Sciences and the Chemistry &amp; Biochemistry Departments, driven to support our community and to raise future environmental agents of change.
+            </p>
+          </div>
+        </div>
+
+        <!-- Chapter 4: ATP (image RIGHT) -->
+        <div class="chapter">
+          <div class="chapter__visual">
+            <span class="chapter__badge">2023 — present</span>
+            <img src="images/12_ESS110__A_Teaching_Moment_in_Glacier_Point_120.png" alt="A teaching moment at Glacier Point — ESS 110">
+          </div>
+          <div class="chapter__node" aria-hidden="true">🌿</div>
+          <div class="chapter__body">
+            <h2 class="chapter__heading">Assistant Teaching Professor</h2>
+            <p class="chapter__text">
+              I am now an Assistant Teaching Professor in the Life and Environmental Sciences Department at UC Merced. It's been quite the journey from aspiring paleontologist to environmental scientist, and I can't wait to see where this path leads next. So, whether you're a student, a colleague, or a fellow dinosaur enthusiast, I look forward to sharing this exciting journey with you!
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="site-footer__inner">
+      <div class="site-footer__left">
+        <address class="site-footer__address">
+          <strong>Get in Touch</strong>
+          Office: SRE 453<br>
+          University of California, Merced<br>
+          5200 N. Lake Road, Merced CA 95343<br>
+          <a href="mailto:smasclin@ucmerced.edu">smasclin@ucmerced.edu</a>
+        </address>
+        <span class="site-footer__copy">© 2008–2026 Sylvain Masclin</span>
+        <span class="site-footer__built">Website built through a conversation with Claude&nbsp;AI, version Sonnet&nbsp;4.6</span>
+      </div>
+      <div class="site-footer__logos">
+        <a href="https://les.ucmerced.edu/ess" target="_blank" rel="noopener" aria-label="Environmental Systems Science — UC Merced">
+          <img src="images/ESS%20Logo.png" alt="ESS — Environmental Systems Science" class="site-footer__logo-img">
+        </a>
+        <a href="https://les.ucmerced.edu" target="_blank" rel="noopener" aria-label="Life and Environmental Sciences — UC Merced">
+          <img src="images/LES-logo.png" alt="Life &amp; Environmental Sciences — UC Merced" class="site-footer__logo-img">
+        </a>
+        <a href="https://www.ucmerced.edu" target="_blank" rel="noopener" aria-label="University of California, Merced">
+          <img src="images/ucmlogo_boomer.png" alt="UC Merced" class="site-footer__logo-img">
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const navToggle = document.getElementById('nav-toggle');
+    const navLinks  = document.getElementById('nav-links');
+    navToggle.addEventListener('click', function() {
+      const open = navLinks.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', open);
+    });
+  </script>
+
+</body>
+</html>
