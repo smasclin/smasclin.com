@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teaching — Sylvain Masclin</title>
+  <meta name="description" content="Sylvain Masclin's teaching portfolio — ESS, CHEM, ENVE and more at UC Merced.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+
+    /* PAGE HEADER */
+    .page-header { background: var(--navy); padding: 4.5rem clamp(1.25rem,4vw,2.5rem) 4rem; position: relative; overflow: hidden; }
+    .page-header::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 80% at 85% 50%, rgba(255,126,0,0.09) 0%, transparent 70%); pointer-events: none; }
+    .page-header__inner { max-width: 1200px; margin-inline: auto; position: relative; z-index: 1; }
+    .page-header__eyebrow { font-family: 'DM Sans', sans-serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.55rem; }
+    .page-header__title { font-family: 'Lora', serif; font-size: clamp(2.2rem, 5vw, 3.6rem); font-weight: 700; color: #f0f8ff; line-height: 1.1; }
+    .page-header__title em { font-style: italic; color: var(--accent); }
+    .page-header__subtitle { font-family: 'Lora', serif; font-style: italic; font-size: clamp(1rem, 1.8vw, 1.18rem); color: rgba(240,248,255,0.5); margin-top: 0.65rem; max-width: 56ch; line-height: 1.55; }
+
+    /* CONSTRUCTION BANNER */
+    .wip-banner {
+      background: var(--accent-glow);
+      border-top: 1px solid rgba(255,126,0,0.15);
+      border-bottom: 1px solid rgba(255,126,0,0.15);
+      padding: 0.875rem clamp(1.25rem,4vw,2.5rem);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      text-align: center;
+    }
+    .wip-banner__icon { font-size: 1.1rem; flex-shrink: 0; }
+    .wip-banner__text { font-family: 'DM Sans', sans-serif; font-size: 0.875rem; color: var(--navy-mid); line-height: 1.5; }
+    .wip-banner__text strong { color: var(--accent-dark); font-weight: 600; }
+
+    /* PORTFOLIO SECTION */
+    .portfolio { padding: 3.5rem clamp(1.25rem,4vw,2.5rem) 5rem; }
+    .portfolio__inner { max-width: 1200px; margin-inline: auto; }
+    .portfolio__label { font-family: 'DM Sans', sans-serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 1.25rem; }
+    .portfolio__frame {
+      border-radius: 16px;
+      overflow: hidden;
+      background: #0b1929;
+      box-shadow: 0 20px 60px rgba(13,34,51,0.18);
+      line-height: 0;
+    }
+    .portfolio__frame img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .portfolio__caption {
+      margin-top: 1rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      text-align: center;
+      font-style: italic;
+    }
+
+    /* COMING SOON CARDS */
+    .coming-soon { padding: 0 clamp(1.25rem,4vw,2.5rem) 5rem; }
+    .coming-soon__inner { max-width: 1200px; margin-inline: auto; }
+    .coming-soon__heading { font-family: 'Lora', serif; font-size: 1.2rem; font-weight: 600; color: var(--text-primary); margin-bottom: 1.25rem; }
+    .coming-soon__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
+    .coming-soon__card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem 1.25rem 1rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+    .coming-soon__card-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 0.1rem; }
+    .coming-soon__card-title { font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.2rem; }
+    .coming-soon__card-sub { font-family: 'DM Sans', sans-serif; font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; }
+
+    /* NAV MOBILE */
+    .site-nav__drawer { display: none; flex-direction: column; background: var(--navy); border-top: 1px solid rgba(255,126,0,0.15); padding: 0.5rem 0 1rem; }
+    .site-nav__drawer a { font-size: 1rem; font-weight: 500; color: rgba(240,248,255,0.7); padding: 0.75rem clamp(1.25rem,4vw,2.5rem); display: block; transition: color 200ms ease; }
+    .site-nav__drawer a:hover { color: #f0f8ff; }
+    .site-nav__drawer a.active { color: var(--accent); }
+    .site-nav__drawer.open { display: flex; }
+
+    /* FOOTER */
+    .site-footer { background: var(--navy); color: rgba(240,248,255,0.6); padding: 3rem clamp(1.25rem,4vw,2.5rem); }
+    .site-footer__inner { max-width: 1200px; margin-inline: auto; display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: start; }
+    .site-footer__address { font-size: 0.85rem; line-height: 1.8; font-style: normal; }
+    .site-footer__address a { color: var(--accent); }
+    .site-footer__address a:hover { text-decoration: underline; }
+    .site-footer__copy { display: block; margin-top: 0.75rem; font-size: 0.78rem; color: rgba(240,248,255,0.35); }
+    .site-footer__built { display: block; font-size: 0.78rem; color: rgba(240,248,255,0.25); margin-top: 0.25rem; }
+    .site-footer__logos { display: flex; align-items: center; gap: 1.25rem; }
+    .site-footer__logo-img { height: 72px; width: auto; opacity: 0.85; filter: brightness(0) invert(1); transition: opacity 200ms ease; display: block; }
+    .site-footer__logo-img:hover { opacity: 1; }
+
+    @media (max-width: 768px) {
+      .site-nav__links { display: none; }
+      .site-nav__toggle { display: flex; }
+      .site-footer__inner { grid-template-columns: 1fr; }
+      .site-footer__logos { gap: 1rem; }
+      .site-footer__logo-img { height: 54px; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <a class="skip-link" href="#main" style="position:absolute;left:-9999px;top:1rem;background:var(--accent);color:#fff;padding:0.5rem 1rem;border-radius:4px;font-size:0.875rem;font-weight:600;z-index:9999;">Skip to main content</a>
+
+  <nav class="site-nav" role="navigation" aria-label="Main navigation">
+    <div class="site-nav__inner">
+      <a href="index.html" class="site-nav__brand" aria-label="Sylvain Masclin — Home">
+        <span class="site-nav__brand-welcome">Welcome to</span>
+        <span class="site-nav__brand-name">Sylvain Masclin's website</span>
+      </a>
+      <ul class="site-nav__links" role="list">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="teaching.html" class="active">Teaching</a></li>
+        <li><a href="academic.html">Academic</a></li>
+        <li><a href="resources.html">Resources</a></li>
+      </ul>
+      <button class="site-nav__toggle" id="nav-toggle" aria-label="Open navigation menu" aria-expanded="false" aria-controls="nav-drawer">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="site-nav__drawer" id="nav-drawer" role="menu">
+      <a href="index.html" role="menuitem">Home</a>
+      <a href="about.html" role="menuitem">About</a>
+      <a href="teaching.html" class="active" role="menuitem">Teaching</a>
+      <a href="academic.html" role="menuitem">Academic</a>
+      <a href="resources.html" role="menuitem">Resources</a>
+    </div>
+  </nav>
+
+  <main id="main">
+
+    <header class="page-header">
+      <div class="page-header__inner">
+        <p class="page-header__eyebrow">In the classroom & beyond</p>
+        <h1 class="page-header__title">Teaching</h1>
+        <p class="page-header__subtitle">From atmospheric science to California ecosystems — a decade of courses, curiosity, and community.</p>
+      </div>
+    </header>
+
+    <div class="wip-banner" role="note" aria-label="Page under construction">
+      <span class="wip-banner__icon" aria-hidden="true">🚧</span>
+      <p class="wip-banner__text"><strong>This page is under construction.</strong> More details are coming soon — including course descriptions, main topics, learning objectives, and how each course fits within the ESS track.</p>
+    </div>
+
+    <section class="portfolio" aria-labelledby="portfolio-label">
+      <div class="portfolio__inner">
+        <p class="portfolio__label" id="portfolio-label">Teaching portfolio — all courses</p>
+        <div class="portfolio__frame">
+          <img
+            src="images/Teaching_Portfolio.png"
+            alt="Teaching portfolio diagram showing all courses taught by Sylvain Masclin — ESS 001, 002, 010, 015, 020, 050, 100, 110, 190; CHEM 001, 002, 010; ENVE 100; and BIOL6 at Merced College, with approximate class sizes."
+          >
+        </div>
+        <p class="portfolio__caption">Bubble size reflects approximate class enrollment. Click to view full resolution.</p>
+      </div>
+    </section>
+
+    <section class="coming-soon" aria-labelledby="coming-label">
+      <div class="coming-soon__inner">
+        <h2 class="coming-soon__heading" id="coming-label">Coming soon to this page</h2>
+        <div class="coming-soon__grid">
+          <div class="coming-soon__card">
+            <span class="coming-soon__card-icon" aria-hidden="true">📋</span>
+            <div>
+              <p class="coming-soon__card-title">Course descriptions</p>
+              <p class="coming-soon__card-sub">Overview of each course — what it covers and who it's for.</p>
+            </div>
+          </div>
+          <div class="coming-soon__card">
+            <span class="coming-soon__card-icon" aria-hidden="true">🎯</span>
+            <div>
+              <p class="coming-soon__card-title">Learning objectives</p>
+              <p class="coming-soon__card-sub">What students take away from each course.</p>
+            </div>
+          </div>
+          <div class="coming-soon__card">
+            <span class="coming-soon__card-icon" aria-hidden="true">🗺️</span>
+            <div>
+              <p class="coming-soon__card-title">ESS track placement</p>
+              <p class="coming-soon__card-sub">How each course fits within the Environmental Systems Science degree.</p>
+            </div>
+          </div>
+          <div class="coming-soon__card">
+            <span class="coming-soon__card-icon" aria-hidden="true">🛠️</span>
+            <div>
+              <p class="coming-soon__card-title">Pedagogical approach</p>
+              <p class="coming-soon__card-sub">Tools, methods, and the teaching philosophy behind the courses.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="site-footer__inner">
+      <div>
+        <address class="site-footer__address">
+          <strong style="color:rgba(240,248,255,0.85);">Get in Touch</strong><br>
+          Office: SRE 453<br>
+          University of California, Merced<br>
+          5200 N. Lake Road, Merced CA 95343<br>
+          <a href="mailto:smasclin@ucmerced.edu">smasclin@ucmerced.edu</a>
+        </address>
+        <span class="site-footer__copy">© 2008–2026 Sylvain Masclin</span>
+        <span class="site-footer__built">Website built through a conversation with Claude AI, version Sonnet 4.6</span>
+      </div>
+      <div class="site-footer__logos">
+        <a href="https://les.ucmerced.edu/ess" target="_blank" rel="noopener" aria-label="Environmental Systems Science — UC Merced">
+          <img src="images/ESS%20Logo.png" alt="ESS Logo" class="site-footer__logo-img">
+        </a>
+        <a href="https://les.ucmerced.edu" target="_blank" rel="noopener" aria-label="Life and Environmental Sciences — UC Merced">
+          <img src="images/LES-logo.png" alt="Life &amp; Environmental Sciences Logo" class="site-footer__logo-img">
+        </a>
+        <a href="https://www.ucmerced.edu" target="_blank" rel="noopener" aria-label="University of California, Merced">
+          <img src="images/ucmlogo_boomer.png" alt="UC Merced Logo" class="site-footer__logo-img">
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const toggle = document.getElementById('nav-toggle');
+    const drawer = document.getElementById('nav-drawer');
+    toggle.addEventListener('click', () => {
+      const open = drawer.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open);
+      toggle.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
+    });
+
+    // Make image clickable to open full resolution
+    document.querySelector('.portfolio__frame img').style.cursor = 'zoom-in';
+    document.querySelector('.portfolio__frame img').addEventListener('click', function() {
+      window.open(this.src, '_blank');
+    });
+  </script>
+
+</body>
+</html>
