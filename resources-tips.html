@@ -51,6 +51,18 @@
     .sub-btn--primary:hover{background:#cc6500}
     .sub-btn svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 
+    /* SEARCH BAR */
+    .search-bar{margin-bottom:1.25rem}
+    .search-bar__inner{position:relative;display:flex;align-items:center}
+    .search-bar__icon{position:absolute;left:1rem;width:16px;height:16px;fill:none;stroke:#4a6d8c;stroke-width:2;stroke-linecap:round;pointer-events:none;flex-shrink:0}
+    .search-bar__input{width:100%;font-family:'DM Sans',sans-serif;font-size:0.9rem;color:#0d2233;background:#fff;border:1.5px solid #c8ddef;border-radius:100px;padding:0.6rem 2.75rem 0.6rem 2.6rem;outline:none;transition:border-color 200ms,box-shadow 200ms}
+    .search-bar__input::placeholder{color:#7a9ab8}
+    .search-bar__input:focus{border-color:#FF7E00;box-shadow:0 0 0 3px rgba(255,126,0,0.12)}
+    .search-bar__clear{position:absolute;right:0.75rem;width:28px;height:28px;border-radius:50%;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;transition:background 180ms}
+    .search-bar__clear:hover{background:#f0f8ff}
+    .search-bar__clear svg{width:13px;height:13px;fill:none;stroke:#4a6d8c;stroke-width:2.2;stroke-linecap:round}
+    .search-highlight{background:rgba(255,126,0,0.18);border-radius:2px;padding:0 1px}
+
     /* FILTER BAR */
     .filter-bar{display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem;margin-bottom:2rem}
     .filter-bar__group{display:flex;flex-wrap:wrap;gap:0.4rem}
@@ -193,6 +205,17 @@
           Subscribe
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
         </a>
+      </div>
+
+      <!-- Search bar -->
+      <div class="search-bar">
+        <div class="search-bar__inner">
+          <svg class="search-bar__icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input class="search-bar__input" type="search" id="tip-search" placeholder="Search tips by keyword…" aria-label="Search tips by keyword">
+          <button class="search-bar__clear" id="search-clear" aria-label="Clear search" hidden>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
       </div>
 
       <!-- Filter bar -->
@@ -1233,38 +1256,124 @@
     hdr.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();}});
   });
 
-  // ── Filter ────────────────────────────────────────
+  // ── Search + Filter ───────────────────────────────
   var filterBtns=document.querySelectorAll('.filter-btn');
   var allCards=document.querySelectorAll('.tip-card');
   var countEl=document.getElementById('results-count');
   var noResults=document.getElementById('no-results');
+  var searchInput=document.getElementById('tip-search');
+  var searchClear=document.getElementById('search-clear');
   var activeTopic='all';
+  var activeQuery='';
+
+  // Store original inner HTML for each card body so we can restore highlights
+  var cardOriginals=[];
+  allCards.forEach(function(card){
+    cardOriginals.push(card.querySelector('.tip-card__body-inner').innerHTML);
+  });
 
   filterBtns.forEach(function(btn){
     btn.addEventListener('click',function(){
       filterBtns.forEach(function(b){b.classList.remove('active');});
       btn.classList.add('active');
       activeTopic=btn.getAttribute('data-topic');
-      applyFilter();
+      applyAll();
     });
   });
 
-  function applyFilter(){
+  searchInput.addEventListener('input',function(){
+    activeQuery=searchInput.value.trim();
+    searchClear.hidden=activeQuery==='';
+    applyAll();
+  });
+
+  searchClear.addEventListener('click',function(){
+    searchInput.value='';
+    activeQuery='';
+    searchClear.hidden=true;
+    searchInput.focus();
+    applyAll();
+  });
+
+  function escapeRegex(str){
+    return str.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+  }
+
+  function applyAll(){
+    var query=activeQuery.toLowerCase();
     var visible=0;
-    allCards.forEach(function(card){
+
+    allCards.forEach(function(card,i){
+      // Restore original HTML (removes old highlights)
+      var bodyInner=card.querySelector('.tip-card__body-inner');
+      bodyInner.innerHTML=cardOriginals[i];
+
       var topics=card.getAttribute('data-topics')||'';
-      var show=(activeTopic==='all')||topics.split(' ').indexOf(activeTopic)>-1;
+      var topicMatch=(activeTopic==='all')||topics.split(' ').indexOf(activeTopic)>-1;
+
+      var queryMatch=true;
+      if(query!==''){
+        var title=card.querySelector('.tip-card__title').textContent.toLowerCase();
+        var body=bodyInner.textContent.toLowerCase();
+        queryMatch=title.indexOf(query)>-1||body.indexOf(query)>-1;
+      }
+
+      var show=topicMatch&&queryMatch;
       card.style.display=show?'':'none';
+
       if(!show){
+        var body2=card.querySelector('.tip-card__body');
+        var chev=card.querySelector('.tip-card__chevron');
+        if(body2){body2.classList.remove('open');}
+        if(chev){chev.classList.remove('open');}
+      } else {
+        visible++;
+        // Highlight matches in body text
+        if(query!==''){
+          highlightText(bodyInner,query);
+          // Auto-open card if it has a match
+          var body3=card.querySelector('.tip-card__body');
+          var chev=card.querySelector('.tip-card__chevron');
+          if(body3){body3.classList.add('open');}
+          if(chev){chev.classList.add('open');}
+          card.querySelector('.tip-card__header').setAttribute('aria-expanded','true');
+        }
+      }
+    });
+
+    // If search cleared, close all cards
+    if(query===''){
+      allCards.forEach(function(card){
         var body=card.querySelector('.tip-card__body');
         var chev=card.querySelector('.tip-card__chevron');
-        if(body){body.classList.remove('open');}
-        if(chev){chev.classList.remove('open');}
-      }
-      if(show) visible++;
-    });
-    countEl.innerHTML='<strong>'+visible+'</strong> tip'+(visible!==1?'s':'');
+        var hdr=card.querySelector('.tip-card__header');
+        if(body&&body.classList.contains('open')){
+          body.classList.remove('open');
+          chev.classList.remove('open');
+          hdr.setAttribute('aria-expanded','false');
+        }
+      });
+    }
+
+    var label=activeQuery!==''?' matching "'+activeQuery+'"':'';
+    countEl.innerHTML='<strong>'+visible+'</strong> tip'+(visible!==1?'s':'')+(label?'<em style="font-weight:400;color:#7a9ab8">'+label+'</em>':'');
     noResults.classList.toggle('show',visible===0);
+  }
+
+  function highlightText(el,query){
+    var walker=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null,false);
+    var textNodes=[];
+    var node;
+    while((node=walker.nextNode())){textNodes.push(node);}
+    var re=new RegExp('('+escapeRegex(query)+')','gi');
+    textNodes.forEach(function(tn){
+      if(re.test(tn.nodeValue)){
+        var span=document.createElement('span');
+        span.innerHTML=tn.nodeValue.replace(re,'<mark class="search-highlight">$1</mark>');
+        tn.parentNode.replaceChild(span,tn);
+      }
+      re.lastIndex=0;
+    });
   }
 
   // ── Mobile nav ────────────────────────────────────
