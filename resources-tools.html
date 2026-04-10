@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shared Tools — Sylvain Masclin</title>
+  <meta name="description" content="Apps and platforms recommended by Sylvain Masclin for teaching — AI chatbots, engagement tools, and field apps.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .site-nav{background:#0d2233;border-bottom:1px solid rgba(255,126,0,0.2);position:sticky;top:0;z-index:100}
+    .site-nav__inner{max-width:1200px;margin-inline:auto;padding-inline:clamp(1.25rem,4vw,2.5rem);display:flex;align-items:center;gap:2rem;height:68px}
+    .site-nav__brand{flex-shrink:0;text-decoration:none;line-height:1.2}
+    .site-nav__brand-welcome{display:block;font-family:'Lora',serif;font-size:0.78rem;font-style:italic;font-weight:400;color:#f0f8ff;letter-spacing:0.01em}
+    .site-nav__brand-name{display:block;font-family:'Lora',serif;font-size:1.05rem;font-weight:700;color:#FF7E00;letter-spacing:0.01em}
+    .site-nav__links{display:flex;gap:0.25rem;list-style:none;margin-left:auto}
+    .site-nav__links a{font-family:'DM Sans',sans-serif;font-size:0.875rem;font-weight:500;color:rgba(240,248,255,0.65);padding:0.35rem 0.85rem;text-decoration:none;position:relative;transition:color 200ms ease}
+    .site-nav__links a::after{content:'';position:absolute;bottom:1px;left:0.85rem;right:0.85rem;height:1.5px;background:#FF7E00;transform:scaleX(0);transform-origin:left;transition:transform 280ms ease;border-radius:1px}
+    .site-nav__links a:hover{color:#f0f8ff}
+    .site-nav__links a:hover::after{transform:scaleX(1)}
+    .site-nav__links a.active{color:#FF7E00}
+    .site-nav__links a.active::after{transform:scaleX(1)}
+    .site-nav__toggle{display:none;flex-direction:column;justify-content:center;align-items:center;gap:5px;width:40px;height:40px;background:none;border:none;cursor:pointer;padding:4px;margin-left:auto}
+    .site-nav__toggle span{display:block;width:22px;height:1.5px;background:rgba(240,248,255,0.7);border-radius:2px}
+
+    .page-header{background:#0d2233;padding:3.5rem clamp(1.25rem,4vw,2.5rem) 3rem}
+    .page-header__inner{max-width:1200px;margin-inline:auto}
+    .page-header__back{font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:500;color:rgba(240,248,255,0.45);text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;margin-bottom:1rem;transition:color 200ms}
+    .page-header__back:hover{color:#FF7E00}
+    .page-header__back svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    .page-header__eyebrow{font-family:'DM Sans',sans-serif;font-size:0.78rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#FF7E00;margin-bottom:0.75rem}
+    .page-header__title{font-family:'Lora',serif;font-size:clamp(2rem,4.5vw,3rem);font-weight:700;color:#f0f8ff;line-height:1.1;margin-bottom:0.9rem}
+    .page-header__intro{font-family:'DM Sans',sans-serif;font-size:1rem;color:rgba(240,248,255,0.6);line-height:1.75;max-width:58ch}
+
+    .tools-body{background:#f0f8ff;padding:3.5rem clamp(1.25rem,4vw,2.5rem) 5rem}
+    .tools-body__inner{max-width:1200px;margin-inline:auto}
+
+    .tools-section{margin-bottom:3rem}
+    .tools-section__label{display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1.5px solid #d6e8f5}
+    .tools-section__label-icon{width:36px;height:36px;border-radius:8px;background:#0d2233;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.05rem;line-height:1}
+    .tools-section__label h2{font-family:'Lora',serif;font-size:1.35rem;font-weight:700;color:#0d2233}
+
+    .tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem}
+
+    .tool-card{background:#fff;border:1.5px solid #d6e8f5;border-radius:14px;padding:1.5rem;display:flex;flex-direction:column;gap:0.55rem;text-decoration:none;transition:box-shadow 200ms,border-color 200ms}
+    a.tool-card:hover{border-color:#FF7E00;box-shadow:0 4px 18px rgba(255,126,0,0.1)}
+    .tool-card__emoji{font-size:1.6rem;line-height:1;margin-bottom:0.1rem}
+    .tool-card__name{font-family:'Lora',serif;font-size:1.05rem;font-weight:700;color:#0d2233}
+    .tool-card__name--muted{color:#4a6d8c}
+    .tool-card__desc{font-family:'DM Sans',sans-serif;font-size:0.86rem;color:#4a6d8c;line-height:1.65;flex:1}
+    .tool-card__tags{display:flex;gap:0.35rem;flex-wrap:wrap;margin-top:0.1rem}
+    .ttag{font-family:'DM Sans',sans-serif;font-size:0.63rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;padding:0.17rem 0.55rem;border-radius:100px}
+    .ttag--ai{background:#e3f2fd;color:#1565c0}
+    .ttag--engagement{background:#e8f5e9;color:#2e7d32}
+    .ttag--field{background:#fff8e1;color:#f57f17}
+    .ttag--canvas{background:#fce4ec;color:#c62828}
+    .tool-card__link{display:inline-flex;align-items:center;gap:0.35rem;font-family:'DM Sans',sans-serif;font-size:0.78rem;font-weight:600;color:#FF7E00;margin-top:0.3rem}
+    .tool-card__link svg{width:11px;height:11px;fill:none;stroke:#FF7E00;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    .tool-card--placeholder{border-style:dashed;border-color:#b8d8f0}
+    .tool-card__coming{font-family:'DM Sans',sans-serif;font-size:0.72rem;font-weight:600;color:#b8d8f0;letter-spacing:0.07em;text-transform:uppercase;margin-top:0.25rem}
+
+    .site-footer{background:#0d2233;border-top:1px solid rgba(255,126,0,0.15);padding:2.5rem clamp(1.25rem,4vw,2.5rem)}
+    .site-footer__inner{max-width:1200px;margin-inline:auto;display:flex;align-items:center;justify-content:space-between;gap:3rem}
+    .site-footer__left{display:flex;flex-direction:column;gap:0}
+    .site-footer__address{font-family:'DM Sans',sans-serif;font-size:0.8rem;color:rgba(240,248,255,0.45);line-height:1.85;font-style:normal}
+    .site-footer__address strong{color:rgba(240,248,255,0.7);font-style:normal;display:block;margin-bottom:0.35rem;font-size:0.72rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase}
+    .site-footer__address a{color:rgba(240,248,255,0.45);text-decoration:none;transition:color 200ms}
+    .site-footer__address a:hover{color:#FF7E00}
+    .site-footer__copy{display:block;margin-top:0.75rem;font-family:'DM Sans',sans-serif;font-size:0.75rem;color:rgba(240,248,255,0.28)}
+    .site-footer__built{display:block;font-family:'DM Sans',sans-serif;font-size:0.7rem;color:rgba(240,248,255,0.18);line-height:1.5;margin-top:0.15rem}
+    .site-footer__logos{display:flex;align-items:center;gap:2.25rem;flex-shrink:0}
+    .site-footer__logo-img{height:72px;width:auto;display:block;opacity:0.9;transition:opacity 200ms}
+    .site-footer__logo-img:hover{opacity:1}
+
+    @media(max-width:700px){.site-footer__inner{flex-direction:column;align-items:flex-start;gap:2rem}.site-footer__logos{gap:1.5rem}.site-footer__logo-img{height:54px}}
+    @media(max-width:600px){
+      .site-nav__links{display:none;flex-direction:column;position:absolute;top:68px;left:0;right:0;background:#0d2233;border-bottom:1px solid rgba(255,126,0,0.15);padding:1rem 1.5rem;z-index:99}
+      .site-nav__links.open{display:flex}
+      .site-nav__links a{font-size:1rem;padding:0.65rem 0}
+      .site-nav__links a::after{display:none}
+      .site-nav__toggle{display:flex}
+      .tools-grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to content</a>
+<nav class="site-nav" aria-label="Main navigation">
+  <div class="site-nav__inner">
+    <a href="index.html" class="site-nav__brand" aria-label="Sylvain Masclin — Home">
+      <span class="site-nav__brand-welcome">Welcome to</span>
+      <span class="site-nav__brand-name">Sylvain Masclin's website</span>
+    </a>
+    <button class="site-nav__toggle" aria-label="Toggle menu" aria-expanded="false" id="nav-toggle">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="site-nav__links" id="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="teaching.html">Teaching</a></li>
+      
+      <li><a href="resources.html" class="active">Resources</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main id="main">
+  <header class="page-header">
+    <div class="page-header__inner">
+      <a href="resources.html" class="page-header__back">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        Back to Resources
+      </a>
+      <p class="page-header__eyebrow">Apps &amp; Platforms</p>
+      <h1 class="page-header__title">Shared Tools</h1>
+      <p class="page-header__intro">A curated collection of tools I use and recommend across my courses — from AI chatbots to audience response systems and field identification apps.</p>
+    </div>
+  </header>
+
+  <div class="tools-body">
+    <div class="tools-body__inner">
+
+      <!-- AI CHATBOTS & ASSISTANTS -->
+      <section class="tools-section" aria-labelledby="ai-heading">
+        <div class="tools-section__label">
+          <div class="tools-section__label-icon">🤖</div>
+          <h2 id="ai-heading">AI Chatbots &amp; Assistants</h2>
+        </div>
+        <div class="tools-grid">
+
+          <a href="https://claude.ai" target="_blank" rel="noopener" class="tool-card">
+            <div class="tool-card__emoji">🟠</div>
+            <p class="tool-card__name">Claude (Anthropic)</p>
+            <p class="tool-card__desc">My top recommendation for academic work. Known for accuracy, thoughtful reasoning, and features like artifacts, projects, and writing styles. Excellent for developing assessments, creating materials, and providing detailed feedback.</p>
+            <div class="tool-card__tags"><span class="ttag ttag--ai">AI Chatbot</span></div>
+            <span class="tool-card__link">claude.ai <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></span>
+          </a>
+
+          <a href="https://chatgpt.com/" target="_blank" rel="noopener" class="tool-card">
+            <div class="tool-card__emoji">💬</div>
+            <p class="tool-card__name">ChatGPT (OpenAI)</p>
+            <p class="tool-card__desc">Text and voice prompting, image and video creation. Widely used by students — understanding its capabilities helps you design better assignments and AI policies. Free tier available; Plus subscription for advanced features.</p>
+            <div class="tool-card__tags"><span class="ttag ttag--ai">AI Chatbot</span></div>
+            <span class="tool-card__link">chatgpt.com <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></span>
+          </a>
+
+          <a href="https://gemini.google.com/" target="_blank" rel="noopener" class="tool-card">
+            <div class="tool-card__emoji">✨</div>
+            <p class="tool-card__name">Google Gemini</p>
+            <p class="tool-card__desc">Text-prompting with web-integrated responses and image creation. Integrates with Google Workspace. Useful for students using Google Drive and Docs. Currently free with generous access for educators and students.</p>
+            <div class="tool-card__tags"><span class="ttag ttag--ai">AI Chatbot</span></div>
+            <span class="tool-card__link">gemini.google.com <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></span>
+          </a>
+
+          <a href="https://notebooklm.google/" target="_blank" rel="noopener" class="tool-card">
+            <div class="tool-card__emoji">📓</div>
+            <p class="tool-card__name">Google NotebookLM</p>
+            <p class="tool-card__desc">Works exclusively with content you provide — upload up to 50 files (PDFs, audio, URLs, Google Drive). Generates study guides, FAQs, practice quizzes, and audio overviews from your course materials. Free and genuinely powerful for students.</p>
+            <div class="tool-card__tags"><span class="ttag ttag--ai">AI Study Tool</span></div>
+            <span class="tool-card__link">notebooklm.google <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></span>
+          </a>
+
+          <a href="https://www.perplexity.ai/" target="_blank" rel="noopener" class="tool-card">
+            <div class="tool-card__emoji">🔍</div>
+            <p class="tool-card__name">Perplexity.ai</p>
+            <p class="tool-card__desc">An AI-powered search engine that answers queries using real-time web information and includes source citations. No account required. Great for quickly finding class activities, recent research, or teaching strategies with academic backing.</p>
+            <div class="tool-card__tags"><span class="ttag ttag--ai">AI Search</span></div>
+            <span class="tool-card__link">perplexity.ai <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></span>
+          </a>
+
+        </div>
+      </section>
+
+      <!-- ENGAGEMENT & POLLING -->
+      <section class="tools-section" aria-labelledby="engagement-heading">
+        <div class="tools-section__label">
+          <div class="tools-section__label-icon">🙋</div>
+          <h2 id="engagement-heading">Engagement &amp; Polling</h2>
+        </div>
+        <div class="tools-grid">
+
+          <a href="https://www.wooclap.com/" target="_blank" rel="noopener" class="tool-card">
+            <div class="tool-card__emoji">📊</div>
+            <p class="tool-card__name">Wooclap</p>
+            <p class="tool-card__desc">Live polls, word clouds, multiple-choice questions, and interactive Q&amp;A — all from any device. My go-to for real-time engagement in large classes. Students respond on their phones; no app download required.</p>
+            <div class="tool-card__tags"><span class="ttag ttag--engagement">Engagement</span><span class="ttag ttag--engagement">Polling</span></div>
+            <span class="tool-card__link">wooclap.com <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></span>
+          </a>
+
+          <a href="https://www.playlab.ai/" target="_blank" rel="noopener" class="tool-card">
+            <div class="tool-card__emoji">🎮</div>
+            <p class="tool-card__name">Playlab.ai</p>
+            <p class="tool-card__desc">Build and share AI-powered learning activities and simulations. I use Playlab to create project-based learning experiences that are interactive and adaptive. Great for collaborative problem-solving in class.</p>
+            <div class="tool-card__tags"><span class="ttag ttag--ai">AI</span><span class="ttag ttag--engagement">Project-Based</span></div>
+            <span class="tool-card__link">playlab.ai <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></span>
+          </a>
+
+          <div class="tool-card tool-card--placeholder">
+            <div class="tool-card__emoji">➕</div>
+            <p class="tool-card__name tool-card__name--muted">More engagement tools coming</p>
+            <p class="tool-card__desc">Additional tools I test in class will be added here over time, including resources for collaborative annotation, peer feedback, and discussion facilitation.</p>
+            <p class="tool-card__coming">To be added</p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- FIELD & NATURE -->
+      <section class="tools-section" aria-labelledby="field-heading">
+        <div class="tools-section__label">
+          <div class="tools-section__label-icon">🌿</div>
+          <h2 id="field-heading">Field &amp; Nature</h2>
+        </div>
+        <div class="tools-grid">
+
+          <a href="https://www.inaturalist.org/" target="_blank" rel="noopener" class="tool-card">
+            <div class="tool-card__emoji">🦋</div>
+            <p class="tool-card__name">iNaturalist</p>
+            <p class="tool-card__desc">Photograph any organism and get an AI-powered species identification. I use iNaturalist in ESS 050 field trips for students to document biodiversity observations in real time. Free, crowd-verified, and genuinely fun in the field.</p>
+            <div class="tool-card__tags"><span class="ttag ttag--field">Field App</span><span class="ttag ttag--field">Biodiversity</span></div>
+            <span class="tool-card__link">inaturalist.org <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></span>
+          </a>
+
+          <div class="tool-card tool-card--placeholder">
+            <div class="tool-card__emoji">➕</div>
+            <p class="tool-card__name tool-card__name--muted">More field tools coming</p>
+            <p class="tool-card__desc">Additional apps and platforms for outdoor and field-based learning will be shared here as they are tested in ESS 015 and ESS 050.</p>
+            <p class="tool-card__coming">To be added</p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- COURSE MANAGEMENT -->
+      <section class="tools-section" aria-labelledby="canvas-heading">
+        <div class="tools-section__label">
+          <div class="tools-section__label-icon">🎓</div>
+          <h2 id="canvas-heading">Course Management</h2>
+        </div>
+        <div class="tools-grid">
+
+          <a href="https://catcourses.ucmerced.edu/" target="_blank" rel="noopener" class="tool-card">
+            <div class="tool-card__emoji">🐾</div>
+            <p class="tool-card__name">Catcourses (Canvas)</p>
+            <p class="tool-card__desc">UC Merced's learning management system — built on Canvas. Useful tip: add <code>/undelete</code> after your course number in the URL to recover deleted content. The What-If Grade Calculator is a great student-facing tool to share.</p>
+            <div class="tool-card__tags"><span class="ttag ttag--canvas">LMS</span><span class="ttag ttag--canvas">UC Merced</span></div>
+            <span class="tool-card__link">catcourses.ucmerced.edu <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></span>
+          </a>
+
+        </div>
+      </section>
+
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer" role="contentinfo">
+  <div class="site-footer__inner">
+    <div class="site-footer__left">
+      <address class="site-footer__address">
+        <strong>Get in Touch</strong>
+        Office: SRE 453<br>University of California, Merced<br>
+        5200 N. Lake Road, Merced CA 95343<br>
+        <a href="mailto:smasclin@ucmerced.edu">smasclin@ucmerced.edu</a>
+      </address>
+      <span class="site-footer__copy">© 2008–2026 Sylvain Masclin</span>
+      <span class="site-footer__built">Website built through a conversation with Claude&nbsp;AI, version Sonnet&nbsp;4.6</span>
+    </div>
+    <div class="site-footer__logos">
+      <a href="https://les.ucmerced.edu/ess" target="_blank" rel="noopener"><img src="images/ESS%20Logo.png" alt="ESS — Environmental Systems Science" class="site-footer__logo-img"></a>
+      <a href="https://les.ucmerced.edu" target="_blank" rel="noopener"><img src="images/LES-logo.png" alt="Life &amp; Environmental Sciences — UC Merced" class="site-footer__logo-img"></a>
+      <a href="https://www.ucmerced.edu" target="_blank" rel="noopener"><img src="images/ucmlogo_boomer.png" alt="UC Merced" class="site-footer__logo-img"></a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  var navToggle=document.getElementById('nav-toggle');
+  var navLinks=document.getElementById('nav-links');
+  navToggle.addEventListener('click',function(){var open=navLinks.classList.toggle('open');navToggle.setAttribute('aria-expanded',open);});
+</script>
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Academic Presentations &amp; Media — Sylvain Masclin</title>
+  <meta name="description" content="Slide decks and recordings from symposia, workshops, and conferences by Sylvain Masclin at UC Merced.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .site-nav{background:#0d2233;border-bottom:1px solid rgba(255,126,0,0.2);position:sticky;top:0;z-index:100}
+    .site-nav__inner{max-width:1200px;margin-inline:auto;padding-inline:clamp(1.25rem,4vw,2.5rem);display:flex;align-items:center;gap:2rem;height:68px}
+    .site-nav__brand{flex-shrink:0;text-decoration:none;line-height:1.2}
+    .site-nav__brand-welcome{display:block;font-family:'Lora',serif;font-size:0.78rem;font-style:italic;font-weight:400;color:#f0f8ff;letter-spacing:0.01em}
+    .site-nav__brand-name{display:block;font-family:'Lora',serif;font-size:1.05rem;font-weight:700;color:#FF7E00;letter-spacing:0.01em}
+    .site-nav__links{display:flex;gap:0.25rem;list-style:none;margin-left:auto}
+    .site-nav__links a{font-family:'DM Sans',sans-serif;font-size:0.875rem;font-weight:500;color:rgba(240,248,255,0.65);padding:0.35rem 0.85rem;text-decoration:none;position:relative;transition:color 200ms ease}
+    .site-nav__links a::after{content:'';position:absolute;bottom:1px;left:0.85rem;right:0.85rem;height:1.5px;background:#FF7E00;transform:scaleX(0);transform-origin:left;transition:transform 280ms ease;border-radius:1px}
+    .site-nav__links a:hover{color:#f0f8ff}
+    .site-nav__links a:hover::after{transform:scaleX(1)}
+    .site-nav__links a.active{color:#FF7E00}
+    .site-nav__links a.active::after{transform:scaleX(1)}
+    .site-nav__toggle{display:none;flex-direction:column;justify-content:center;align-items:center;gap:5px;width:40px;height:40px;background:none;border:none;cursor:pointer;padding:4px;margin-left:auto}
+    .site-nav__toggle span{display:block;width:22px;height:1.5px;background:rgba(240,248,255,0.7);border-radius:2px}
+
+    .page-header{background:#0d2233;padding:3.5rem clamp(1.25rem,4vw,2.5rem) 3rem}
+    .page-header__inner{max-width:1200px;margin-inline:auto}
+    .page-header__back{font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:500;color:rgba(240,248,255,0.45);text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;margin-bottom:1rem;transition:color 200ms}
+    .page-header__back:hover{color:#FF7E00}
+    .page-header__back svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    .page-header__eyebrow{font-family:'DM Sans',sans-serif;font-size:0.78rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#FF7E00;margin-bottom:0.75rem}
+    .page-header__title{font-family:'Lora',serif;font-size:clamp(2rem,4.5vw,3rem);font-weight:700;color:#f0f8ff;line-height:1.1;margin-bottom:0.9rem}
+    .page-header__intro{font-family:'DM Sans',sans-serif;font-size:1rem;color:rgba(240,248,255,0.6);line-height:1.75;max-width:58ch}
+
+    .pres-body{background:#f0f8ff;padding:3.5rem clamp(1.25rem,4vw,2.5rem) 5rem}
+    .pres-body__inner{max-width:1200px;margin-inline:auto}
+
+    /* Section heading */
+    .pres-section{margin-bottom:3rem}
+    .pres-section__label{display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1.5px solid #d6e8f5}
+    .pres-section__label-icon{width:36px;height:36px;border-radius:8px;background:#0d2233;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .pres-section__label-icon svg{width:18px;height:18px;fill:none;stroke:#FF7E00;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    .pres-section__label h2{font-family:'Lora',serif;font-size:1.35rem;font-weight:700;color:#0d2233}
+
+    /* Cards */
+    .pres-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem}
+    .pres-card{background:#fff;border:1.5px solid #d6e8f5;border-radius:14px;padding:1.5rem;display:flex;flex-direction:column;gap:0.65rem;transition:box-shadow 200ms,border-color 200ms}
+    .pres-card:hover{border-color:#FF7E00;box-shadow:0 4px 18px rgba(255,126,0,0.1)}
+    .pres-card--placeholder{border-style:dashed;border-color:#b8d8f0}
+    .pres-card--placeholder:hover{border-color:#4a6d8c;box-shadow:none}
+    .pres-card__date{font-family:'DM Sans',sans-serif;font-size:0.72rem;font-weight:700;letter-spacing:0.09em;text-transform:uppercase;color:#FF7E00}
+    .pres-card__date--muted{color:#4a6d8c}
+    .pres-card__title{font-family:'Lora',serif;font-size:1.05rem;font-weight:700;color:#0d2233;line-height:1.35}
+    .pres-card__title--muted{color:#4a6d8c}
+    .pres-card__desc{font-family:'DM Sans',sans-serif;font-size:0.86rem;color:#4a6d8c;line-height:1.65;flex:1}
+    .pres-card__tags{display:flex;gap:0.35rem;flex-wrap:wrap}
+    .ptag{font-family:'DM Sans',sans-serif;font-size:0.63rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;padding:0.17rem 0.55rem;border-radius:100px;background:#f0f8ff;color:#4a6d8c}
+    .pres-card__link{display:inline-flex;align-items:center;gap:0.4rem;font-family:'DM Sans',sans-serif;font-size:0.8rem;font-weight:600;color:#FF7E00;text-decoration:none;margin-top:0.25rem}
+    .pres-card__link:hover{text-decoration:underline}
+    .pres-card__link svg{width:12px;height:12px;fill:none;stroke:#FF7E00;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    .pres-card__coming{font-family:'DM Sans',sans-serif;font-size:0.75rem;font-weight:600;color:#b8d8f0;letter-spacing:0.06em;text-transform:uppercase;margin-top:0.25rem}
+
+    .site-footer{background:#0d2233;border-top:1px solid rgba(255,126,0,0.15);padding:2.5rem clamp(1.25rem,4vw,2.5rem)}
+    .site-footer__inner{max-width:1200px;margin-inline:auto;display:flex;align-items:center;justify-content:space-between;gap:3rem}
+    .site-footer__left{display:flex;flex-direction:column;gap:0}
+    .site-footer__address{font-family:'DM Sans',sans-serif;font-size:0.8rem;color:rgba(240,248,255,0.45);line-height:1.85;font-style:normal}
+    .site-footer__address strong{color:rgba(240,248,255,0.7);font-style:normal;display:block;margin-bottom:0.35rem;font-size:0.72rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase}
+    .site-footer__address a{color:rgba(240,248,255,0.45);text-decoration:none;transition:color 200ms}
+    .site-footer__address a:hover{color:#FF7E00}
+    .site-footer__copy{display:block;margin-top:0.75rem;font-family:'DM Sans',sans-serif;font-size:0.75rem;color:rgba(240,248,255,0.28)}
+    .site-footer__built{display:block;font-family:'DM Sans',sans-serif;font-size:0.7rem;color:rgba(240,248,255,0.18);line-height:1.5;margin-top:0.15rem}
+    .site-footer__logos{display:flex;align-items:center;gap:2.25rem;flex-shrink:0}
+    .site-footer__logo-img{height:72px;width:auto;display:block;opacity:0.9;transition:opacity 200ms}
+    .site-footer__logo-img:hover{opacity:1}
+
+    @media(max-width:700px){.site-footer__inner{flex-direction:column;align-items:flex-start;gap:2rem}.site-footer__logos{gap:1.5rem}.site-footer__logo-img{height:54px}}
+    @media(max-width:600px){
+      .site-nav__links{display:none;flex-direction:column;position:absolute;top:68px;left:0;right:0;background:#0d2233;border-bottom:1px solid rgba(255,126,0,0.15);padding:1rem 1.5rem;z-index:99}
+      .site-nav__links.open{display:flex}
+      .site-nav__links a{font-size:1rem;padding:0.65rem 0}
+      .site-nav__links a::after{display:none}
+      .site-nav__toggle{display:flex}
+      .pres-grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to content</a>
+<nav class="site-nav" aria-label="Main navigation">
+  <div class="site-nav__inner">
+    <a href="index.html" class="site-nav__brand" aria-label="Sylvain Masclin — Home">
+      <span class="site-nav__brand-welcome">Welcome to</span>
+      <span class="site-nav__brand-name">Sylvain Masclin's website</span>
+    </a>
+    <button class="site-nav__toggle" aria-label="Toggle menu" aria-expanded="false" id="nav-toggle">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="site-nav__links" id="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="teaching.html">Teaching</a></li>
+      
+      <li><a href="resources.html" class="active">Resources</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main id="main">
+  <header class="page-header">
+    <div class="page-header__inner">
+      <a href="resources.html" class="page-header__back">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        Back to Resources
+      </a>
+      <p class="page-header__eyebrow">Talks, Slides &amp; Recordings</p>
+      <h1 class="page-header__title">Academic Presentations &amp; Media</h1>
+      <p class="page-header__intro">Slide decks and recordings from symposia, workshops, and academic conferences — shared here as they become available.</p>
+    </div>
+  </header>
+
+  <div class="pres-body">
+    <div class="pres-body__inner">
+
+      <!-- SYMPOSIA & RECORDINGS -->
+      <section class="pres-section" aria-labelledby="symposia-heading">
+        <div class="pres-section__label">
+          <div class="pres-section__label-icon">
+            <svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+          </div>
+          <h2 id="symposia-heading">Symposia &amp; Event Recordings</h2>
+        </div>
+        <div class="pres-grid">
+          <div class="pres-card">
+            <p class="pres-card__date">March 14, 2025</p>
+            <h3 class="pres-card__title">Demystifying AI in Academia</h3>
+            <p class="pres-card__desc">Symposium held at UC Merced Research Week — Teaching Commons Learning Lab, KL 316. Presentations from colleagues on research workflows, virtual teaching assistance, scientific writing tools, eye-tracking for personalized learning, and multilingual communication.</p>
+            <div class="pres-card__tags"><span class="ptag">Symposium</span><span class="ptag">AI in Education</span><span class="ptag">UC Merced</span></div>
+            <p class="pres-card__coming">Recording coming soon</p>
+          </div>
+          <div class="pres-card pres-card--placeholder">
+            <p class="pres-card__date pres-card__date--muted">Future event</p>
+            <h3 class="pres-card__title pres-card__title--muted">More recordings on the way</h3>
+            <p class="pres-card__desc">Workshop and symposium recordings will be archived here as they become available and are cleared for public sharing.</p>
+            <p class="pres-card__coming">To be added</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDES -->
+      <section class="pres-section" aria-labelledby="slides-heading">
+        <div class="pres-section__label">
+          <div class="pres-section__label-icon">
+            <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          </div>
+          <h2 id="slides-heading">Presentation Slides</h2>
+        </div>
+        <div class="pres-grid">
+          <div class="pres-card pres-card--placeholder">
+            <p class="pres-card__date pres-card__date--muted">Coming soon</p>
+            <h3 class="pres-card__title pres-card__title--muted">Course &amp; Conference Decks</h3>
+            <p class="pres-card__desc">Slide decks from lectures, workshops, and academic conferences — ESS 015, ESS 050, ESS 002, and professional development sessions — will be added here as they are prepared for public sharing.</p>
+            <div class="pres-card__tags"><span class="ptag">ESS 015</span><span class="ptag">ESS 050</span><span class="ptag">ESS 002</span><span class="ptag">Workshops</span></div>
+            <p class="pres-card__coming">To be added</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer" role="contentinfo">
+  <div class="site-footer__inner">
+    <div class="site-footer__left">
+      <address class="site-footer__address">
+        <strong>Get in Touch</strong>
+        Office: SRE 453<br>University of California, Merced<br>
+        5200 N. Lake Road, Merced CA 95343<br>
+        <a href="mailto:smasclin@ucmerced.edu">smasclin@ucmerced.edu</a>
+      </address>
+      <span class="site-footer__copy">© 2008–2026 Sylvain Masclin</span>
+      <span class="site-footer__built">Website built through a conversation with Claude&nbsp;AI, version Sonnet&nbsp;4.6</span>
+    </div>
+    <div class="site-footer__logos">
+      <a href="https://les.ucmerced.edu/ess" target="_blank" rel="noopener"><img src="images/ESS%20Logo.png" alt="ESS — Environmental Systems Science" class="site-footer__logo-img"></a>
+      <a href="https://les.ucmerced.edu" target="_blank" rel="noopener"><img src="images/LES-logo.png" alt="Life &amp; Environmental Sciences — UC Merced" class="site-footer__logo-img"></a>
+      <a href="https://www.ucmerced.edu" target="_blank" rel="noopener"><img src="images/ucmlogo_boomer.png" alt="UC Merced" class="site-footer__logo-img"></a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  var navToggle=document.getElementById('nav-toggle');
+  var navLinks=document.getElementById('nav-links');
+  navToggle.addEventListener('click',function(){var open=navLinks.classList.toggle('open');navToggle.setAttribute('aria-expanded',open);});
+</script>
+</body>
+</html>

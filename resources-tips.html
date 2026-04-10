@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tuesday Teaching Tips — Sylvain Masclin</title>
+  <meta name="description" content="All 31 Tuesday Teaching Tips — weekly pedagogy newsletter by Sylvain Masclin in partnership with UC Merced CETL.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* NAV */
+    .site-nav{background:#0d2233;border-bottom:1px solid rgba(255,126,0,0.2);position:sticky;top:0;z-index:100}
+    .site-nav__inner{max-width:1200px;margin-inline:auto;padding-inline:clamp(1.25rem,4vw,2.5rem);display:flex;align-items:center;gap:2rem;height:68px}
+    .site-nav__brand{flex-shrink:0;text-decoration:none;line-height:1.2}
+    .site-nav__brand-welcome{display:block;font-family:'Lora',serif;font-size:0.78rem;font-style:italic;font-weight:400;color:#f0f8ff;letter-spacing:0.01em}
+    .site-nav__brand-name{display:block;font-family:'Lora',serif;font-size:1.05rem;font-weight:700;color:#FF7E00;letter-spacing:0.01em}
+    .site-nav__links{display:flex;gap:0.25rem;list-style:none;margin-left:auto}
+    .site-nav__links a{font-family:'DM Sans',sans-serif;font-size:0.875rem;font-weight:500;color:rgba(240,248,255,0.65);padding:0.35rem 0.85rem;text-decoration:none;position:relative;transition:color 200ms ease}
+    .site-nav__links a::after{content:'';position:absolute;bottom:1px;left:0.85rem;right:0.85rem;height:1.5px;background:#FF7E00;transform:scaleX(0);transform-origin:left;transition:transform 280ms ease;border-radius:1px}
+    .site-nav__links a:hover{color:#f0f8ff}
+    .site-nav__links a:hover::after{transform:scaleX(1)}
+    .site-nav__links a.active{color:#FF7E00}
+    .site-nav__links a.active::after{transform:scaleX(1)}
+    .site-nav__toggle{display:none;flex-direction:column;justify-content:center;align-items:center;gap:5px;width:40px;height:40px;background:none;border:none;cursor:pointer;padding:4px;margin-left:auto}
+    .site-nav__toggle span{display:block;width:22px;height:1.5px;background:rgba(240,248,255,0.7);border-radius:2px}
+
+    /* HEADER */
+    .page-header{background:#0d2233;padding:3.5rem clamp(1.25rem,4vw,2.5rem) 3rem}
+    .page-header__inner{max-width:1200px;margin-inline:auto;display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:end}
+    .page-header__back{font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:500;color:rgba(240,248,255,0.45);text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;margin-bottom:1rem;transition:color 200ms}
+    .page-header__back:hover{color:#FF7E00}
+    .page-header__back svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    .page-header__eyebrow{font-family:'DM Sans',sans-serif;font-size:0.78rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#FF7E00;margin-bottom:0.75rem}
+    .page-header__title{font-family:'Lora',serif;font-size:clamp(2rem,4.5vw,3rem);font-weight:700;color:#f0f8ff;line-height:1.1;margin-bottom:0.9rem}
+    .page-header__intro{font-family:'DM Sans',sans-serif;font-size:1rem;color:rgba(240,248,255,0.6);line-height:1.75;max-width:58ch}
+    .page-header__logo-col{display:flex;align-items:flex-end;justify-content:flex-end;padding-bottom:0.25rem}
+    .page-header__ttt-logo{height:64px;width:auto;display:block}
+
+    /* BODY */
+    .tips-body{background:#f0f8ff;padding:3rem clamp(1.25rem,4vw,2.5rem) 5rem}
+    .tips-body__inner{max-width:1200px;margin-inline:auto}
+
+    /* SUBSCRIBE STRIP */
+    .subscribe-strip{background:#fff;border:1.5px solid #d6e8f5;border-radius:12px;padding:1.1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;margin-bottom:2.5rem;flex-wrap:wrap}
+    .subscribe-strip p{font-family:'DM Sans',sans-serif;font-size:0.88rem;color:#1a3a52;line-height:1.5}
+    .subscribe-strip p strong{color:#0d2233}
+    .sub-btn{display:inline-flex;align-items:center;gap:0.45rem;font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:600;padding:0.5rem 1.15rem;border-radius:100px;text-decoration:none;transition:background 200ms,color 200ms;flex-shrink:0}
+    .sub-btn--primary{background:#FF7E00;color:#fff}
+    .sub-btn--primary:hover{background:#cc6500}
+    .sub-btn svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+
+    /* FILTER BAR */
+    .filter-bar{display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem;margin-bottom:2rem}
+    .filter-bar__group{display:flex;flex-wrap:wrap;gap:0.4rem}
+    .filter-btn{font-family:'DM Sans',sans-serif;font-size:0.8rem;font-weight:500;padding:0.32rem 0.9rem;border-radius:100px;border:1.5px solid #c8ddef;background:#fff;color:#4a6d8c;cursor:pointer;transition:all 180ms;white-space:nowrap}
+    .filter-btn:hover{border-color:#FF7E00;color:#FF7E00}
+    .filter-btn.active{background:#FF7E00;border-color:#FF7E00;color:#fff;font-weight:600}
+    /* topic-specific active colours */
+    .filter-btn[data-topic="ai"].active{background:#1a3a52;border-color:#1a3a52;color:#fff}
+    .filter-btn[data-topic="engagement"].active{background:#2e7d32;border-color:#2e7d32;color:#fff}
+    .filter-btn[data-topic="assessment"].active{background:#6a1b9a;border-color:#6a1b9a;color:#fff}
+    .filter-btn[data-topic="classroom"].active{background:#b55a00;border-color:#b55a00;color:#fff}
+    .filter-sep{width:1px;height:20px;background:#d6e8f5;align-self:center;flex-shrink:0}
+
+    /* RESULTS COUNT */
+    .results-count{font-family:'DM Sans',sans-serif;font-size:0.8rem;color:#4a6d8c;margin-bottom:1.25rem}
+    .results-count strong{color:#0d2233}
+
+    /* TIPS GRID */
+    .tips-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.25rem}
+
+    /* TIP CARD */
+    .tip-card{background:#fff;border:1.5px solid #d6e8f5;border-radius:14px;overflow:hidden;transition:box-shadow 200ms,border-color 200ms;display:flex;flex-direction:column}
+    .tip-card:hover{border-color:#FF7E00;box-shadow:0 4px 22px rgba(255,126,0,0.1)}
+    .tip-card__header{padding:1.15rem 1.25rem 0.9rem;cursor:pointer;display:flex;align-items:flex-start;gap:0.85rem}
+    .tip-card__meta{flex:1;min-width:0}
+    .tip-card__top{display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.35rem}
+    .tip-card__code{font-family:'DM Sans',sans-serif;font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#4a6d8c}
+    .tip-card__title{font-family:'Lora',serif;font-size:1rem;font-weight:700;color:#0d2233;line-height:1.35}
+    .tip-card__tags{display:flex;gap:0.35rem;flex-wrap:wrap;margin-top:0.45rem}
+    .tag{font-family:'DM Sans',sans-serif;font-size:0.62rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;padding:0.17rem 0.5rem;border-radius:100px}
+    .tag--ai{background:#e3f2fd;color:#1565c0}
+    .tag--engagement{background:#e8f5e9;color:#2e7d32}
+    .tag--assessment{background:#f3e5f5;color:#6a1b9a}
+    .tag--classroom{background:#fff3e0;color:#e65100}
+    .tip-card__chevron{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:#f0f8ff;border:1.5px solid #d6e8f5;display:flex;align-items:center;justify-content:center;margin-top:3px;transition:background 200ms,border-color 200ms,transform 200ms}
+    .tip-card__chevron svg{width:14px;height:14px;fill:none;stroke:#4a6d8c;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;transition:stroke 200ms}
+    .tip-card:hover .tip-card__chevron{background:#FF7E00;border-color:#FF7E00}
+    .tip-card:hover .tip-card__chevron svg{stroke:#fff}
+    .tip-card__chevron.open{transform:rotate(180deg);background:#FF7E00;border-color:#FF7E00}
+    .tip-card__chevron.open svg{stroke:#fff}
+
+    .tip-card__body{max-height:0;overflow:hidden;transition:max-height 0.38s cubic-bezier(0.4,0,0.2,1)}
+    .tip-card__body.open{max-height:1400px}
+    .tip-card__body-inner{padding:0.9rem 1.25rem 1.25rem;border-top:1px solid #e8f4ff}
+    .tip-card__body-inner p{font-family:'DM Sans',sans-serif;font-size:0.875rem;color:#1a3a52;line-height:1.78;margin-bottom:0.6rem}
+    .tip-card__body-inner p:last-child{margin-bottom:0}
+    .tip-card__body-inner strong{color:#0d2233;font-weight:600}
+    .tip-card__body-inner em{font-style:italic;color:#4a6d8c}
+    .tip-card__body-inner ul{padding-left:1.15rem;margin-bottom:0.6rem}
+    .tip-card__body-inner li{font-family:'DM Sans',sans-serif;font-size:0.875rem;color:#1a3a52;line-height:1.75;margin-bottom:0.28rem}
+    .tip-card__body-inner a{color:#FF7E00;text-decoration:none}
+    .tip-card__body-inner a:hover{text-decoration:underline}
+    .tip-card__body-inner code{font-family:monospace;font-size:0.82rem;background:#f0f8ff;padding:0.1em 0.4em;border-radius:4px;color:#1a3a52}
+
+    /* no-results message */
+    .no-results{display:none;font-family:'DM Sans',sans-serif;font-size:0.95rem;color:#4a6d8c;padding:2rem 0;text-align:center}
+    .no-results.show{display:block}
+
+    /* FOOTER */
+    .site-footer{background:#0d2233;border-top:1px solid rgba(255,126,0,0.15);padding:2.5rem clamp(1.25rem,4vw,2.5rem)}
+    .site-footer__inner{max-width:1200px;margin-inline:auto;display:flex;align-items:center;justify-content:space-between;gap:3rem}
+    .site-footer__left{display:flex;flex-direction:column;gap:0}
+    .site-footer__address{font-family:'DM Sans',sans-serif;font-size:0.8rem;color:rgba(240,248,255,0.45);line-height:1.85;font-style:normal}
+    .site-footer__address strong{color:rgba(240,248,255,0.7);font-style:normal;display:block;margin-bottom:0.35rem;font-size:0.72rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase}
+    .site-footer__address a{color:rgba(240,248,255,0.45);text-decoration:none;transition:color 200ms}
+    .site-footer__address a:hover{color:#FF7E00}
+    .site-footer__copy{display:block;margin-top:0.75rem;font-family:'DM Sans',sans-serif;font-size:0.75rem;color:rgba(240,248,255,0.28)}
+    .site-footer__built{display:block;font-family:'DM Sans',sans-serif;font-size:0.7rem;color:rgba(240,248,255,0.18);line-height:1.5;margin-top:0.15rem}
+    .site-footer__logos{display:flex;align-items:center;gap:2.25rem;flex-shrink:0}
+    .site-footer__logo-img{height:72px;width:auto;display:block;opacity:0.9;transition:opacity 200ms}
+    .site-footer__logo-img:hover{opacity:1}
+
+    @media(max-width:760px){
+      .tips-grid{grid-template-columns:1fr}
+      .page-header__inner{grid-template-columns:1fr}
+      .page-header__logo-col{display:none}
+    }
+    @media(max-width:700px){
+      .site-footer__inner{flex-direction:column;align-items:flex-start;gap:2rem}
+      .site-footer__logos{gap:1.5rem}
+      .site-footer__logo-img{height:54px}
+      .subscribe-strip{flex-direction:column;align-items:flex-start}
+    }
+    @media(max-width:600px){
+      .site-nav__links{display:none;flex-direction:column;position:absolute;top:68px;left:0;right:0;background:#0d2233;border-bottom:1px solid rgba(255,126,0,0.15);padding:1rem 1.5rem;z-index:99}
+      .site-nav__links.open{display:flex}
+      .site-nav__links a{font-size:1rem;padding:0.65rem 0}
+      .site-nav__links a::after{display:none}
+      .site-nav__toggle{display:flex}
+    }
+  </style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to content</a>
+<nav class="site-nav" aria-label="Main navigation">
+  <div class="site-nav__inner">
+    <a href="index.html" class="site-nav__brand" aria-label="Sylvain Masclin — Home">
+      <span class="site-nav__brand-welcome">Welcome to</span>
+      <span class="site-nav__brand-name">Sylvain Masclin's website</span>
+    </a>
+    <button class="site-nav__toggle" aria-label="Toggle menu" aria-expanded="false" id="nav-toggle">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="site-nav__links" id="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="teaching.html">Teaching</a></li>
+      
+      <li><a href="resources.html" class="active">Resources</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main id="main">
+  <header class="page-header">
+    <div class="page-header__inner">
+      <div>
+        <a href="resources.html" class="page-header__back">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+          Back to Resources
+        </a>
+        <p class="page-header__eyebrow">Weekly Newsletter · UC Merced CETL</p>
+        <h1 class="page-header__title">Tuesday Teaching Tips</h1>
+        <p class="page-header__intro">Short, practical pedagogy tips sent weekly to UC Merced faculty. Every tip is grounded in real classroom experience and developed in partnership with CETL.</p>
+      </div>
+      <div class="page-header__logo-col">
+        <img src="images/TTT.png" alt="Tuesday Teaching Tips logo" class="page-header__ttt-logo">
+      </div>
+    </div>
+  </header>
+
+  <div class="tips-body">
+    <div class="tips-body__inner">
+
+      <!-- Subscribe strip -->
+      <div class="subscribe-strip">
+        <p><strong>Want tips in your inbox?</strong> Tuesday Teaching Tips are sent biweekly during the academic year to UC Merced faculty.</p>
+        <a href="https://forms.gle/pDd9moEYqfdhn2xb9" target="_blank" rel="noopener" class="sub-btn sub-btn--primary">
+          Subscribe
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+      </div>
+
+      <!-- Filter bar -->
+      <div class="filter-bar" role="group" aria-label="Filter tips by topic">
+        <div class="filter-bar__group">
+          <button class="filter-btn active" data-topic="all">All topics</button>
+        </div>
+        <div class="filter-sep" aria-hidden="true"></div>
+        <div class="filter-bar__group">
+          <button class="filter-btn" data-topic="ai">🤖 AI &amp; Tools</button>
+          <button class="filter-btn" data-topic="engagement">🙋 Engagement</button>
+          <button class="filter-btn" data-topic="assessment">📝 Assessment</button>
+          <button class="filter-btn" data-topic="classroom">🏫 Classroom Mgmt</button>
+        </div>
+      </div>
+
+      <!-- Results count -->
+      <p class="results-count" id="results-count"><strong>31</strong> tips</p>
+
+      <!-- No-results -->
+      <p class="no-results" id="no-results">No tips match this filter. Try another topic.</p>
+
+      <!-- ══ TIPS GRID ════════════════════════════════ -->
+      <div class="tips-grid" id="tips-grid">
+
+        <!-- data-topics is a space-separated list of tag keys -->
+
+        <article class="tip-card" data-topics="engagement classroom">
+          <div class="tip-card__header" role="button" tabindex="0" aria-expanded="false">
+            <div class="tip-card__meta">
+              <div class="tip-card__top"><span class="tip-card__code">S26-04</span></div>
+              <h3 class="tip-card__title">Reignite the Mid-Semester Spark</h3>
+              <div class="tip-card__tags"><span class="tag tag--engagement">Engagement</span><span class="tag tag--classroom">Classroom Mgmt</span></div>
+            </div>
+            <div class="tip-card__chevron" aria-label="Expand tip"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
+          <div class="tip-card__body"><div class="tip-card__body-inner">
+            <p>Student motivation naturally dips as the semester progresses, but small changes can make a big impact.</p>
+            <p><strong>Add Movement and Play</strong></p>
+            <ul><li>Offer a brief, structured break during longer class sessions</li><li>Try Team Jeopardy or quick minute-to-win-it challenges</li><li>Organize a walk-and-talk discussion to get students out of their seats</li></ul>
+            <p><strong>Increase Personal Connection</strong></p>
+            <ul><li>Invite a guest speaker to bring fresh energy and real-world insights</li><li>Use small-group peer discussions to break up lecture time</li></ul>
+            <p><strong>Create Flexibility</strong></p>
+            <ul><li>Survey students mid-semester: ask what's working and what's not</li><li>Consider adjusting workloads or deadlines for the rest of the semester</li></ul>
+          </div></div>
+        </article>
+
+        <article class="tip-card" data-topics="engagement classroom">
+          <div class="tip-card__header" role="button" tabindex="0" aria-expanded="false">
+            <div class="tip-card__meta">
+              <div class="tip-card__top"><span class="tip-card__code">S26-03</span></div>
+              <h3 class="tip-card__title">Take Your Class Temperature</h3>
+              <div class="tip-card__tags"><span class="tag tag--engagement">Engagement</span><span class="tag tag--classroom">Classroom Mgmt</span></div>
+            </div>
+            <div class="tip-card__chevron" aria-label="Expand tip"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
+          <div class="tip-card__body"><div class="tip-card__body-inner">
+            <p>Mid-semester is the perfect time to check how students feel about your learning environment. Take 15–20 minutes for a direct <strong>think-pair-share</strong>:</p>
+            <ul><li>Students form pairs, then groups of four, to discuss what's working and what could improve</li><li>Guide reflection: <em>What's been most helpful? What's caused the most difficulty? What suggestions do you have?</em></li></ul>
+            <p>This creates a productive class conversation, provides actionable feedback, and shows students you care about their journey.</p>
+          </div></div>
+        </article>
+
+        <article class="tip-card" data-topics="engagement">
+          <div class="tip-card__header" role="button" tabindex="0" aria-expanded="false">
+            <div class="tip-card__meta">
+              <div class="tip-card__top"><span class="tip-card__code">S26-02</span></div>
+              <h3 class="tip-card__title">When Low-Tech Wins</h3>
+              <div class="tip-card__tags"><span class="tag tag--engagement">Engagement</span></div>
+            </div>
+            <div class="tip-card__chevron" aria-label="Expand tip"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
+          <div class="tip-card__body"><div class="tip-card__body-inner">
+            <p>Printed group activities generate better collaboration than digital ones. Students talk, share ideas, and work together instead of scrolling on their screens.</p>
+            <ul><li>Distribute one printed activity per group of ~4 students</li><li>Have students write their names on it for accountability</li></ul>
+            <p><strong>Pros:</strong> Faster to prepare, no device issues, forces face-to-face engagement.<br><strong>Cons &amp; solutions:</strong> Create a quick Catcourses quiz keyword for participation credit; one print per group minimizes waste.</p>
+          </div></div>
+        </article>
+
+        <article class="tip-card" data-topics="engagement">
+          <div class="tip-card__header" role="button" tabindex="0" aria-expanded="false">
+            <div class="tip-card__meta">
+              <div class="tip-card__top"><span class="tip-card__code">S26-01</span></div>
+              <h3 class="tip-card__title">Welcome Students with Connection</h3>
+              <div class="tip-card__tags"><span class="tag tag--engagement">Engagement</span></div>
+            </div>
+            <div class="tip-card__chevron" aria-label="Expand tip"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
+          <div class="tip-card__body"><div class="tip-card__body-inner">
+            <p>Before diving into course content, invest in introductions:</p>
+            <ul><li><strong>Introduce yourself:</strong> your love of teaching, your discipline, your hobbies, where you're from</li><li><strong>Know your students:</strong> survey them on why they're here, what they hope to learn, their dream job</li><li><strong>Help students meet each other:</strong> 5–10 minute icebreaker — bingo, two truths and a lie, blobs and lines…</li></ul>
+            <p>These small investments show students you're excited to work with them this semester.</p>
+          </div></div>
+        </article>
+
+        <article class="tip-card" data-topics="assessment classroom">
+          <div class="tip-card__header" role="button" tabindex="0" aria-expanded="false">
+            <div class="tip-card__meta">
+              <div class="tip-card__top"><span class="tip-card__code">F25-15</span></div>
+              <h3 class="tip-card__title">Looking Back to Move Forward</h3>
+              <div class="tip-card__tags"><span class="tag tag--assessment">Assessment</span><span class="tag tag--classroom">Classroom Mgmt</span></div>
+            </div>
+            <div class="tip-card__chevron" aria-label="Expand tip"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
+          <div class="tip-card__body"><div class="tip-card__body-inner">
+            <p>Finals week — the perfect time for a three-way reflection:</p>
+            <ul><li><strong>Students:</strong> extra-credit survey on what helped or limited their learning</li><li><strong>TA(s):</strong> discuss what worked, gather suggestions</li><li><strong>Yourself:</strong> evaluate which objectives were met, note successful activities</li></ul>
+            <p><strong>Key step:</strong> Pick ONE major change to implement next semester. Not five. One meaningful adjustment.</p>
+          </div></div>
+        </article>
+
+        <article class="tip-card" data-topics="assessment ai">
+          <div class="tip-card__header" role="button" tabindex="0" aria-expanded="false">
+            <div class="tip-card__meta">
+              <div class="tip-card__top"><span class="tip-card__code">F25-14</span></div>
+              <h3 class="tip-card__title">Rethinking Finals in the AI Age</h3>
+              <div class="tip-card__tags"><span class="tag tag--assessment">Assessment</span><span class="tag tag--ai">AI &amp; Tools</span></div>
+            </div>
+            <div class="tip-card__chevron" aria-label="Expand tip"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
+          <div class="tip-card__body"><div class="tip-card__body-inner">
+            <p>Browser extensions now read Catcourses quizzes and suggest answers in real-time. Any online or take-home assignment is potentially vulnerable. Consider:</p>
+            <ul><li>Supervised pen-and-paper exams</li><li>Visual projects — infographics or posters requiring synthesis</li><li>Portfolio-based assessments demonstrating growth over time</li><li>Media projects — videos, podcasts, or presentations</li><li>Oral exams, individual or small-group</li><li>Assignments requiring personal experience, local data, or original analysis</li><li>If allowing AI: require students to document their process and critique AI outputs</li></ul>
+          </div></div>
+        </article>
+
+        <article class="tip-card" data-topics="classroom assessment">
+          <div class="tip-card__header" role="button" tabindex="0" aria-expanded="false">
+            <div class="tip-card__meta">
+              <div class="tip-card__top"><span class="tip-card__code">F25-13</span></div>
+              <h3 class="tip-card__title">Your Pre-Thanksgiving Checklist</h3>
+              <div class="tip-card__tags"><span class="tag tag--classroom">Classroom Mgmt</span><span class="tag tag--assessment">Assessment</span></div>
+            </div>
+            <div class="tip-card__chevron" aria-label="Expand tip"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
+          <div class="tip-card__body"><div class="tip-card__body-inner">
+            <p><strong>For your gradebook:</strong></p>
+            <ul><li>Grade and release all completed assignments</li><li>Assign zeros to non-submitted work</li><li>Update assignment weights if delivery differed from the original plan</li><li>Finalize and schedule remaining assignments through finals week</li></ul>
+            <p><strong>For your students:</strong></p>
+            <ul><li>Send a clear end-of-semester checklist announcement</li><li>Remind them about the What-If Grade Calculator in Catcourses</li><li>Consider preparing an exit course survey</li></ul>
+          </div></div>
+        </article>
+
+        <article class="tip-card" data-topics="engagement ai">
+          <div class="tip-card__header" role="button" tabindex="0" aria-expanded="false">
+            <div class="tip-card__meta">
+              <div class="tip-card__top"><span class="tip-card__code">F25-12</span></div>
+              <h3 class="tip-card__title">Build Study Skills, Not Study Guides</h3>
+              <div class="tip-card__tags"><span class="tag tag--engagement">Engagement</span><span class="tag tag--ai">AI &amp; Tools</span></div>
+            </div>
+            <div class="tip-card__chevron" aria-label="Expand tip"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
+          <div class="tip-card__body"><div class="tip-card__body-inner">
+            <ul><li><strong>Guide students to create their own:</strong> concept maps, Cornell notes, flashcards — make it an in-class activity</li><li><strong>Point to existing resources:</strong> chapter objectives, end-of-lecture takeaway slides, weekly review quizzes</li><li><strong>Build review into class time:</strong> one-minute papers, group concept mapping, Mentimeter/Wooclap sessions</li><li><strong>AI study tools:</strong> Google NotebookLM can generate mock tests, study guides, FAQs, and audio reviews from course materials</li></ul>
+          </div></div>
+        </article>
+
+        <article class="tip-card" data-topics="engagement">
+          <div class="tip-card__header" role="button" tabindex="0" aria-expanded="false">
+            <div class="tip-card__meta">
+              <div class="tip-card__top"><span class="tip-card__code">F25-11</span></div>
+              <h3 class="tip-card__title">To Guide or Not to Guide?</h3>
+              <div class="tip-card__tags"><span class="tag tag--engagement">Engagement</span></div>
+            </div>
+            <div class="tip-card__chevron" aria-label="Expand tip"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
+          <div class="tip-card__body"><div class="tip-card__body-inner">
+            <p>Every semester, students ask for study guides — a habit rooted in secondary education. The dilemma: should we give in?</p>
+            <p>Some say no: students need to develop their own study skills, and spoon-feeding creates passive learners. Others argue yes: dense college material can overwhelm even bright students, and structure helps while they're still developing skills.</p>
+            <p>What if there's a middle ground? See tip F25-12 for alternatives that actually work.</p>
+          </div></div>
+        </article>
+
+        <article class="tip-card" data-topics="engagement classroom">
+          <div class="tip-card__header" role="button" tabindex="0" aria-expanded="false">
+            <div class="tip-card__meta">
+              <div class="tip-card__top"><span class="tip-card__code">F25-10</span></div>
+              <h3 class="tip-card__title">Beat the Mid-Semester Slump</h3>
+              <div class="tip-card__tags"><span class="tag tag--engagement">Engagement</span><span class="tag tag--classroom">Classroom Mgmt</span></div>
+            </div>
+            <div class="tip-card__chevron" aria-label="Expand tip"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
+          <div class="tip-card__body"><div class="tip-card__body-inner">
+            <ul><li><strong>Acknowledge it:</strong> naming this period can be validating for students</li><li><strong>Use media:</strong> play music as students enter or show a relevant clip</li><li><strong>Flip your format:</strong> start with discussion, or try a "no-lecture day"</li><li><strong>Connect to current events:</strong> news articles, podcasts, or videos linking concepts to the real world</li><li><strong>Invite a guest:</strong> a colleague, alum, or grad student brings fresh perspective</li><li><strong>Revisit your syllabus:</strong> consider adjustments based on current progress</li></ul>
+            <p>Your energy impacts your students. A 10-minute walk before class can make all the difference.</p>
+          </div></div>
+        </article>
+
+        <article class="tip-card" data-topics="engagement assessment">
+          <div class="tip-card__header" role="button" tabindex="0" aria-expanded="false">
+            <div class="tip-card__meta">
+              <div class="tip-card__top"><span class="tip-card__code">F25-09</span></div>
+              <h3 class="tip-card__title">The Mid-Semester Check-In</h3>
+              <div class="tip-card__tags"><span class="tag tag--engagement">Engagement</span><span class="tag tag--assessment">Assessment</span></div>
+            </div>
+            <div class="tip-card__chevron" aria-label="Expand tip"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
+          <div class="tip-card__body"><div class="tip-card__body-inner">
+            <p>After submitting mid-semester grades, flip the script and get feedback on your course. Just 5–15 minutes can offer invaluable insights:</p>
+            <ul><li><strong>Quick online survey:</strong> Catcourses Quizzes, Qualtrics, Mentimeter, or Wooclap</li><li><strong>Interactive discussion:</strong> 15-minute think-pair-share on what's working and what could improve</li><li><strong>SATAL support:</strong> request a formal mid-semester evaluation through the Students Assessing Teaching and Learning program</li></ul>
+            <p>Use feedback for small, actionable adjustments. This shows students you value their role in the classroom.</p>
+          </div></div>
+        </article>
+
+        <article class="tip-card" data-topics="engagement classroom">
+          <div class="tip-card__header" role="button" tabindex="0" aria-expanded="false">
+            <div class="tip-card__meta">
+              <div class="tip-card__top"><span class="tip-card__code">F25-08</span></div>
+              <h3 class="tip-card__title">It's Not Wrong, It's Learning</h3>
+              <div class="tip-card__tags"><span class="tag tag--engagement">Engagement</span><span class="tag tag--classroom">Classroom Mgmt</span></div>
+            </div>
+            <div class="tip-card__chevron" aria-label="Expand tip"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
+          <div class="tip-card__body"><div class="tip-card__body-inner">
+            <p>When a student's answer misses the mark, your response can shut down participation — or create a powerful learning moment:</p>
+            <ul><li><strong>Dig deeper:</strong> "Walk me through your thinking on that."</li><li><strong>Build on it:</strong> "You're on the right track! Can someone add to that?"</li><li><strong>Guide gently:</strong> "I like where you're going. Now consider this…"</li><li><strong>Find the connection:</strong> link their response to a related concept, then circle back</li><li><strong>Acknowledge the effort:</strong> recognize their willingness to try while explaining why the answer isn't quite right</li></ul>
+          </div></div>
+        </article>
+
+        <article class="tip-card" data-topics="classroom">
+          <div class="tip-card__header" role="button" tabindex="0" aria-expanded="false">
+            <div class="tip-card__meta">
+              <div class="tip-card__top"><span class="tip-card__code">F25-07</span></div>
+              <h3 class="tip-card__title">Recover Deleted Canvas Content</h3>
+              <div class="tip-card__tags"><span class="tag tag--classroom">Classroom Mgmt</span></div>
+            </div>
+            <div class="tip-card__chevron" aria-label="Expand tip"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
+          <div class="tip-card__body"><div class="tip-card__body-inner">
+            <p>Accidentally deleted an assignment on Catcourses? There's a simple recovery trick:</p>
+            <ul><li>Navigate to your course on Catcourses</li><li>In the address bar, add <code>/undelete</code> right after your course number</li></ul>
+            <p>Example: <code>catcourses.ucmerced.edu/courses/YOUR-COURSE-NUMBER/undelete</code></p>
+            <p>Bookmark this for future emergencies!</p>
+          </div></div>
+        </article>
+
+        <article class="tip-card" data-topics="engagement">
+          <div class="tip-card__header" role="button" tabindex="0" aria-expanded="false">
+            <div class="tip-card__meta">
+              <div class="tip-card__top"><span class="tip-card__code">F25-06</span></div>
+              <h3 class="tip-card__title">It's About the Ritual</h3>
+              <div class="tip-card__tags"><span class="tag tag--engagement">Engagement</span></div>
+            </div>
+            <div class="tip-card__chevron" aria-label="Expand tip"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
+          <div class="tip-card__body"><div class="tip-card__body-inner">
+            <p>Opening rituals reduce anxiety, build positive energy, and signal that learning can be both rigorous and enjoyable:</p>
+            <ul><li><strong>Share a fun fact:</strong> a surprising tidbit related to today's topic</li><li><strong>Learn about your students:</strong> "Starbucks or Dutch Bros?" — low effort, high connection</li><li><strong>What's happening here?:</strong> project an intriguing image and ask students to describe what they see</li><li><strong>Mindful breathing:</strong> 4-7-8 breath — inhale 4 counts, hold 7, exhale 8</li><li><strong>Music:</strong> play something as students settle in</li></ul>
+            <p>Consistency matters more than complexity. Find what feels authentic to you and stick with it.</p>
+          </div></div>
+        </article>
+
+        <article class="tip-card" data-topics="engagement">
+          <div class="tip-card__header" role="button" tabindex="0" aria-expanded="false">
+            <div class="tip-card__meta">
+              <div class="tip-card__top"><span class="tip-card__code">F25-05</span></div>
+              <h3 class="tip-card__title">It's Not About the Joke</h3>
+              <div class="tip-card__tags"><span class="tag tag--engagement">Engagement</span></div>
+            </div>
+            <div class="tip-card__chevron" aria-label="Expand tip"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
+          <div class="tip-card__body"><div class="tip-card__body-inner">
+            <p><em>Q: Who's the king of the classroom? A: The ruler.</em></p>
+            <p>I've been starting most classes with a dad joke for years. Students still request them and mention this ritual positively in course evaluations. What I've observed:</p>
+            <ul><li>The classroom atmosphere becomes more relaxed and welcoming</li><li>Transitioning from social time to academic content feels smoother</li><li>Students engage more quickly with the instructor</li><li>Students approach me more readily during and after class</li></ul>
+            <p>The specific activity matters less than the intention to create a welcoming space.</p>
+          </div></div>
+        </article>
+
+        <article class="tip-card" data-topics="engagement classroom">
+          <div class="tip-card__header" role="button" tabindex="0" aria-expanded="false">
+            <div class="tip-card__meta">
+              <div class="tip-card__top"><span class="tip-card__code">F25-04</span></div>
+              <h3 class="tip-card__title">The Power of the 2-Minute Break</h3>
+              <div class="tip-card__tags"><span class="tag tag--engagement">Engagement</span><span class="tag tag--classroom">Classroom Mgmt</span></div>
+            </div>
+            <div class="tip-card__chevron" aria-label="Expand tip"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
+          <div class="tip-card__body"><div class="tip-card__body-inner">
+            <p>Short breaks every 10–15 minutes boost student retention and give you a moment to recharge. Try any of these (2 mins each):</p>
+            <ul><li><strong>Review and Clarify:</strong> students review notes and jot down questions</li><li><strong>Quick Quiz:</strong> Kahoot, Mentimeter, Wooclap, or clickers</li><li><strong>Discussion:</strong> relate concepts to real-world examples or predict next lecture steps</li><li><strong>Pair Share:</strong> partners explain key points, then share with the class</li><li><strong>One-Minute Paper:</strong> write the most important point or lingering question</li></ul>
+          </div></div>
+        </article>
+
+        <article class="tip-card" data-topics="engagement classroom">
+          <div class="tip-card__header" role="button" tabindex="0" aria-expanded="false">
+            <div class="tip-card__meta">
+              <div class="tip-card__top"><span class="tip-card__code">F25-03</span></div>
+              <h3 class="tip-card__title">Teaching in the TikTok News Era</h3>
+              <div class="tip-card__tags"><span class="tag tag--engagement">Engagement</span><span class="tag tag--classroom">Classroom Mgmt</span></div>
+            </div>
+            <div class="tip-card__chevron" aria-label="Expand tip"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
+          <div class="tip-card__body"><div class="tip-card__body-inner">
+            <p>A survey of 253 UC Merced students (ESS002 &amp; ESS050) revealed that <strong>78% use social media for daily news</strong>, with TikTok leading at 40%. Algorithms prioritize engagement over accuracy, limiting exposure to diverse perspectives.</p>
+            <ul><li>Discuss source evaluation briefly in class</li><li>Lead a cross-referencing activity comparing different sources on the same topic</li><li>It's not about judging students' choices but building critical thinking skills</li></ul>
+          </div></div>
+        </article>
+
+        <article class="tip-card" data-topics="engagement classroom">
+          <div class="tip-card__header" role="button" tabindex="0" aria-expanded="false">
+            <div class="tip-card__meta">
+              <div class="tip-card__top"><span class="tip-card__code">F25-02</span></div>
+              <h3 class="tip-card__title">Getting Students Back to Office Hours</h3>
+              <div class="tip-card__tags"><span class="tag tag--engagement">Engagement</span><span class="tag tag--classroom">Classroom Mgmt</span></div>
+            </div>
+            <div class="tip-card__chevron" aria-label="Expand tip"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
+          <div class="tip-card__body"><div class="tip-card__body-inner">
+            <p>Office hour attendance has declined significantly since COVID — research shows no recovery upon returning to in-person teaching. We need to actively promote them. Remind students that:</p>
+            <ul><li>Office hours aren't just for struggling students — they're valuable for everyone</li><li>They improve understanding and grades through personalized clarification</li><li>They build connections for future recommendations and research opportunities</li></ul>
+            <p>Mention office hours during lectures, send periodic reminders, and emphasize that asking questions shows engagement, not weakness.</p>
+          </div></div>
+        </article>
+
+        <article class="tip-card" data-topics="ai classroom">
+          <div class="tip-card__header" role="button" tabindex="0" aria-expanded="false">
+            <div class="tip-card__meta">
+              <div class="tip-card__top"><span class="tip-card__code">F25-01</span></div>
+              <h3 class="tip-card__title">Setting AI Expectations for a Fresh Start</h3>
+              <div class="tip-card__tags"><span class="tag tag--ai">AI &amp; Tools</span><span class="tag tag--classroom">Classroom Mgmt</span></div>
+            </div>
+            <div class="tip-card__chevron" aria-label="Expand tip"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
+          <div class="tip-card__body"><div class="tip-card__body-inner">
+            <p>Over 70% of high school students have used AI tools, and our incoming students are AI users transitioning from "high school AI work" to "university critical thinking."</p>
+            <p><strong>Recommendation:</strong> Include an AI policy in your syllabus and discuss it on the first day. Resources:</p>
+            <ul><li><a href="https://docs.google.com/document/d/1RMVwzjc1o0Mi8Blw_-JUTcXv02b2WRH86vw7mi16W3U/edit" target="_blank" rel="noopener">Syllabi Policies for AI Generative Tools</a> (~176 policies by Lance Eaton)</li><li>ESS002 Syllabus Extract: Academic Integrity and AI (available on request)</li></ul>
+          </div></div>
+        </article>
+
+        <article class="tip-card" data-topics="ai">
+          <div class="tip-card__header" role="button" tabindex="0" aria-expanded="false">
+            <div class="tip-card__meta">
+              <div class="tip-card__top"><span class="tip-card__code">#13 · Spring '25</span></div>
+              <h3 class="tip-card__title">Students Need AI-Aware Professors</h3>
+              <div class="tip-card__tags"><span class="tag tag--ai">AI &amp; Tools</span></div>
+            </div>
+            <div class="tip-card__chevron" aria-label="Expand tip"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
+          <div class="tip-card__body"><div class="tip-card__body-inner">
+            <p>ChatGPT Plus is now free through May; Gemini Advanced free through finals 2026. These "gifts" are strategic investments in future customers. We must become AI-aware instructors.</p>
+            <ul><li><strong>Know what you're up against:</strong> spend 30 minutes weekly exploring AI tools to understand what students are using</li><li><strong>Focus on process, not product:</strong> design assignments that value the learning journey</li><li><strong>Trust your instincts:</strong> watch for sudden style shifts or references to concepts not covered in class</li><li><strong>Be explicit:</strong> create clear AI policies</li></ul>
+          </div></div>
+        </article>
+
+        <article class="tip-card" data-topics="ai assessment">
+          <div class="tip-card__header" role="button" tabindex="0" aria-expanded="false">
+            <div class="tip-card__meta">
+              <div class="tip-card__top"><span class="tip-card__code">#12 · Spring '25</span></div>
+              <h3 class="tip-card__title">Catching the AI Wave Without Drowning</h3>
+              <div class="tip-card__tags"><span class="tag tag--ai">AI &amp; Tools</span><span class="tag tag--assessment">Assessment</span></div>
+            </div>
+            <div class="tip-card__chevron" aria-label="Expand tip"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
+          <div class="tip-card__body"><div class="tip-card__body-inner">
+            <p>AI isn't coming to education — it's already here. How to respond:</p>
+            <ul><li>Return to supervised assessments when possible</li><li>Design "AI-proof" assignments requiring personal experience or local data</li><li>Teach responsible AI use rather than ignoring its existence</li><li>Adjust what we value in student work (process over product)</li></ul>
+            <p>Recommended reading: <em>Teaching with AI: A Practical Guide to a New Era of Human Learning</em> by José Bowen &amp; Edward Watson (2024).</p>
+          </div></div>
+        </article>
+
+        <article class="tip-card" data-topics="ai assessment">
+          <div class="tip-card__header" role="button" tabindex="0" aria-expanded="false">
+            <div class="tip-card__meta">
+              <div class="tip-card__top"><span class="tip-card__code">#11 · Spring '25</span></div>
+              <h3 class="tip-card__title">Speed Up Your Catcourses Quiz Creation with AI</h3>
+              <div class="tip-card__tags"><span class="tag tag--ai">AI &amp; Tools</span><span class="tag tag--assessment">Assessment</span></div>
+            </div>
+            <div class="tip-card__chevron" aria-label="Expand tip"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
+          <div class="tip-card__body"><div class="tip-card__body-inner">
+            <ul><li><strong>Quiz creation:</strong> AI generates questions from a transcript. Try: <em>"Create two versions of a 10-question quiz — 6 multiple-choice (5 options each) and 4 true-false — based on this transcript. Include the correct answer after each question."</em></li><li><strong>Quiz formatting:</strong> AI converts your existing quiz into Canvas-ready import format. Try: <em>"Convert this quiz into Canvas quiz format following the uploaded template."</em></li></ul>
+          </div></div>
+        </article>
+
+        <article class="tip-card" data-topics="ai assessment">
+          <div class="tip-card__header" role="button" tabindex="0" aria-expanded="false">
+            <div class="tip-card__meta">
+              <div class="tip-card__top"><span class="tip-card__code">#10 · Spring '25</span></div>
+              <h3 class="tip-card__title">AI-Proof Your Assignments</h3>
+              <div class="tip-card__tags"><span class="tag tag--ai">AI &amp; Tools</span><span class="tag tag--assessment">Assessment</span></div>
+            </div>
+            <div class="tip-card__chevron" aria-label="Expand tip"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
+          <div class="tip-card__body"><div class="tip-card__body-inner">
+            <p>Browser extensions can now read Catcourses quizzes and suggest answers in real-time. Consider these alternatives:</p>
+            <ul><li>Return to pen-and-paper exams</li><li>Redesign as infographics</li><li>Create portfolio-based assessments</li><li>Assign media projects</li><li>Conduct oral presentations/exams</li></ul>
+            <p>If we accept AI's presence, we can transform the challenge by targeting higher-order thinking (analyze, evaluate, create) rather than lower-level recall.</p>
+          </div></div>
+        </article>
+
+        <article class="tip-card" data-topics="ai assessment">
+          <div class="tip-card__header" role="button" tabindex="0" aria-expanded="false">
+            <div class="tip-card__meta">
+              <div class="tip-card__top"><span class="tip-card__code">#08 · Spring '25</span></div>
+              <h3 class="tip-card__title">In AI Detectors, Trust You Won't</h3>
+              <div class="tip-card__tags"><span class="tag tag--ai">AI &amp; Tools</span><span class="tag tag--assessment">Assessment</span></div>
+            </div>
+            <div class="tip-card__chevron" aria-label="Expand tip"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
+          <div class="tip-card__body"><div class="tip-card__body-inner">
+            <p>AI detection software has serious limitations: frequent false positives (especially for non-native speakers), easily fooled by "humanizer" tools, and questionable accuracy. Instead:</p>
+            <ul><li><strong>Design purposeful assignments:</strong> connect tasks clearly to learning outcomes</li><li><strong>Focus on process:</strong> break assignments into stages that make student thinking visible</li><li><strong>Trust your instincts:</strong> watch for sudden style shifts or generic content</li></ul>
+          </div></div>
+        </article>
+
+        <article class="tip-card" data-topics="ai">
+          <div class="tip-card__header" role="button" tabindex="0" aria-expanded="false">
+            <div class="tip-card__meta">
+              <div class="tip-card__top"><span class="tip-card__code">#07 · Spring '25</span></div>
+              <h3 class="tip-card__title">A Picture Is Worth a Thousand Words</h3>
+              <div class="tip-card__tags"><span class="tag tag--ai">AI &amp; Tools</span></div>
+            </div>
+            <div class="tip-card__chevron" aria-label="Expand tip"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
+          <div class="tip-card__body"><div class="tip-card__body-inner">
+            <p>Custom AI-generated visuals improve student understanding of complex concepts. Try: <a href="https://chatgpt.com/" target="_blank" rel="noopener">DALL-E (ChatGPT)</a>, <a href="https://gemini.google.com/" target="_blank" rel="noopener">Gemini</a>, <a href="https://designer.microsoft.com/" target="_blank" rel="noopener">Microsoft Designer</a>, or <a href="https://firefly.adobe.com/" target="_blank" rel="noopener">Adobe Firefly</a>.</p>
+            <p>Example prompt: <em>"Create a realistic photo of cumulus clouds forming by convection above a bare soil field surrounded by wetlands in California's Central Valley. Show water vapor rising from heated soil, distant mountains on the horizon."</em></p>
+            <p>Also: <a href="https://www.napkin.ai/" target="_blank" rel="noopener">Napkin.ai</a> transforms notes into polished visuals — ideal for illustrating concepts on the fly.</p>
+          </div></div>
+        </article>
+
+        <article class="tip-card" data-topics="ai assessment">
+          <div class="tip-card__header" role="button" tabindex="0" aria-expanded="false">
+            <div class="tip-card__meta">
+              <div class="tip-card__top"><span class="tip-card__code">#06 · Spring '25</span></div>
+              <h3 class="tip-card__title">Let AI Do the Heavy Lifting in Assignment Creation</h3>
+              <div class="tip-card__tags"><span class="tag tag--ai">AI &amp; Tools</span><span class="tag tag--assessment">Assessment</span></div>
+            </div>
+            <div class="tip-card__chevron" aria-label="Expand tip"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
+          <div class="tip-card__body"><div class="tip-card__body-inner">
+            <ul><li><strong>Brainstorming:</strong> <em>"Create 2 quiz versions from the uploaded transcript — 6 multiple-choice, 3 true/false, 1 matching. Provide the key after each question."</em></li><li><strong>Structuring:</strong> <em>"Rewrite this assignment following the uploaded template. Limit learning objectives to two major ones."</em></li><li><strong>Rubrics:</strong> <em>"Create a 50-point rubric for a college-level Hydrology poster project — 5 criteria max, 3 grading categories."</em></li></ul>
+            <p>Always treat AI output as a first draft that needs your expertise to refine.</p>
+          </div></div>
+        </article>
+
+        <article class="tip-card" data-topics="ai">
+          <div class="tip-card__header" role="button" tabindex="0" aria-expanded="false">
+            <div class="tip-card__meta">
+              <div class="tip-card__top"><span class="tip-card__code">#05 · Spring '25</span></div>
+              <h3 class="tip-card__title">Discover NotebookLM for Teaching</h3>
+              <div class="tip-card__tags"><span class="tag tag--ai">AI &amp; Tools</span></div>
+            </div>
+            <div class="tip-card__chevron" aria-label="Expand tip"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
+          <div class="tip-card__body"><div class="tip-card__body-inner">
+            <p><a href="https://notebooklm.google/" target="_blank" rel="noopener">NotebookLM</a> works exclusively with content you provide — upload up to 50 files (PDFs, text, audio, URLs, Google Drive). Teaching applications:</p>
+            <ul><li>Comprehensive study guides from course materials</li><li>FAQ documents for complex topics</li><li>Interactive audio content for diverse learning styles</li><li>Guided summaries to support student mastery</li></ul>
+            <p>Consider introducing NotebookLM directly to your students as a study tool!</p>
+          </div></div>
+        </article>
+
+        <article class="tip-card" data-topics="ai">
+          <div class="tip-card__header" role="button" tabindex="0" aria-expanded="false">
+            <div class="tip-card__meta">
+              <div class="tip-card__top"><span class="tip-card__code">#04 · Spring '25</span></div>
+              <h3 class="tip-card__title">Perplexity.ai: Your AI-Powered Research Assistant</h3>
+              <div class="tip-card__tags"><span class="tag tag--ai">AI &amp; Tools</span></div>
+            </div>
+            <div class="tip-card__chevron" aria-label="Expand tip"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
+          <div class="tip-card__body"><div class="tip-card__body-inner">
+            <p><a href="https://www.perplexity.ai/" target="_blank" rel="noopener">Perplexity</a> — a free AI-powered search engine, no account required. It searches with real-time web information, provides concise summaries with source citations, and offers follow-up questions to refine your search.</p>
+            <p>Try these prompts:</p>
+            <ul><li><em>"Find a 10-minute class activity for [your course] of [N] college students, focusing on [topic], with academic sources"</em></li><li><em>"Has developing AI tutoring tools benefited student learning in higher education? Provide recent evidence and studies"</em></li></ul>
+          </div></div>
+        </article>
+
+        <article class="tip-card" data-topics="ai">
+          <div class="tip-card__header" role="button" tabindex="0" aria-expanded="false">
+            <div class="tip-card__meta">
+              <div class="tip-card__top"><span class="tip-card__code">#03 · Spring '25</span></div>
+              <h3 class="tip-card__title">Principal AI Assistants for Teaching</h3>
+              <div class="tip-card__tags"><span class="tag tag--ai">AI &amp; Tools</span></div>
+            </div>
+            <div class="tip-card__chevron" aria-label="Expand tip"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
+          <div class="tip-card__body"><div class="tip-card__body-inner">
+            <ul><li><strong>ChatGPT:</strong> text and voice prompting, image and video creation (subscription)</li><li><strong>Google Gemini:</strong> text-prompting with web-integrated responses and image creation</li><li><strong>Microsoft Copilot:</strong> directly integrated in Microsoft Office tools</li><li><strong>Claude:</strong> known for accuracy and academic-focused features (artifacts, projects, writing styles)</li></ul>
+            <p>For academic work, I recommend Claude due to its precision, strong ethical framework, and robust capabilities for assessments, course materials, and detailed feedback. Always review and verify outputs before use.</p>
+          </div></div>
+        </article>
+
+        <article class="tip-card" data-topics="ai engagement">
+          <div class="tip-card__header" role="button" tabindex="0" aria-expanded="false">
+            <div class="tip-card__meta">
+              <div class="tip-card__top"><span class="tip-card__code">#02 · Spring '25</span></div>
+              <h3 class="tip-card__title">Enhancing First-Day Connections with AI Tools</h3>
+              <div class="tip-card__tags"><span class="tag tag--ai">AI &amp; Tools</span><span class="tag tag--engagement">Engagement</span></div>
+            </div>
+            <div class="tip-card__chevron" aria-label="Expand tip"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
+          <div class="tip-card__body"><div class="tip-card__body-inner">
+            <ul><li>Generate customized icebreakers based on your course content (e.g., biology-themed "Two Truths and a Lie")</li><li>Create engaging syllabus review activities (transform course objectives into a fun quiz)</li><li>Design first-day surveys that give meaningful insights</li></ul>
+            <p>Try this prompt: <em>"Create an engaging 10-minute icebreaker activity for a [your subject] course that helps students connect course content with their personal interests."</em></p>
+            <p>The goal: use AI to enhance, not replace, those precious first human connections.</p>
+          </div></div>
+        </article>
+
+        <article class="tip-card" data-topics="ai classroom">
+          <div class="tip-card__header" role="button" tabindex="0" aria-expanded="false">
+            <div class="tip-card__meta">
+              <div class="tip-card__top"><span class="tip-card__code">#01 · Spring '25</span></div>
+              <h3 class="tip-card__title">AI in Teaching: Starting with Clear AI Policies</h3>
+              <div class="tip-card__tags"><span class="tag tag--ai">AI &amp; Tools</span><span class="tag tag--classroom">Classroom Mgmt</span></div>
+            </div>
+            <div class="tip-card__chevron" aria-label="Expand tip"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
+          <div class="tip-card__body"><div class="tip-card__body-inner">
+            <p>Now is the perfect time to review and update your course policies on AI tool usage. Resources:</p>
+            <ul><li><a href="https://docs.google.com/document/d/1RMVwzjc1o0Mi8Blw_-JUTcXv02b2WRH86vw7mi16W3U/edit" target="_blank" rel="noopener">Lance Eaton's comprehensive collection of ~176 AI policies</a></li><li>ESS002 updated course section on Academic Integrity and AI (available on request)</li></ul>
+          </div></div>
+        </article>
+
+      </div><!-- /tips-grid -->
+
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer" role="contentinfo">
+  <div class="site-footer__inner">
+    <div class="site-footer__left">
+      <address class="site-footer__address">
+        <strong>Get in Touch</strong>
+        Office: SRE 453<br>University of California, Merced<br>
+        5200 N. Lake Road, Merced CA 95343<br>
+        <a href="mailto:smasclin@ucmerced.edu">smasclin@ucmerced.edu</a>
+      </address>
+      <span class="site-footer__copy">© 2008–2026 Sylvain Masclin</span>
+      <span class="site-footer__built">Website built through a conversation with Claude&nbsp;AI, version Sonnet&nbsp;4.6</span>
+    </div>
+    <div class="site-footer__logos">
+      <a href="https://les.ucmerced.edu/ess" target="_blank" rel="noopener" aria-label="Environmental Systems Science — UC Merced">
+        <img src="images/ESS%20Logo.png" alt="ESS — Environmental Systems Science" class="site-footer__logo-img">
+      </a>
+      <a href="https://les.ucmerced.edu" target="_blank" rel="noopener" aria-label="Life and Environmental Sciences — UC Merced">
+        <img src="images/LES-logo.png" alt="Life &amp; Environmental Sciences — UC Merced" class="site-footer__logo-img">
+      </a>
+      <a href="https://www.ucmerced.edu" target="_blank" rel="noopener" aria-label="University of California, Merced">
+        <img src="images/ucmlogo_boomer.png" alt="UC Merced" class="site-footer__logo-img">
+      </a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ── Accordion ─────────────────────────────────────
+  document.querySelectorAll('.tip-card__header').forEach(function(hdr){
+    function toggle(){
+      var card=hdr.closest('.tip-card');
+      var body=card.querySelector('.tip-card__body');
+      var chev=card.querySelector('.tip-card__chevron');
+      var open=body.classList.toggle('open');
+      chev.classList.toggle('open',open);
+      hdr.setAttribute('aria-expanded',open);
+    }
+    hdr.addEventListener('click',toggle);
+    hdr.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();}});
+  });
+
+  // ── Filter ────────────────────────────────────────
+  var filterBtns=document.querySelectorAll('.filter-btn');
+  var allCards=document.querySelectorAll('.tip-card');
+  var countEl=document.getElementById('results-count');
+  var noResults=document.getElementById('no-results');
+  var activeTopic='all';
+
+  filterBtns.forEach(function(btn){
+    btn.addEventListener('click',function(){
+      filterBtns.forEach(function(b){b.classList.remove('active');});
+      btn.classList.add('active');
+      activeTopic=btn.getAttribute('data-topic');
+      applyFilter();
+    });
+  });
+
+  function applyFilter(){
+    var visible=0;
+    allCards.forEach(function(card){
+      var topics=card.getAttribute('data-topics')||'';
+      var show=(activeTopic==='all')||topics.split(' ').indexOf(activeTopic)>-1;
+      card.style.display=show?'':'none';
+      if(!show){
+        var body=card.querySelector('.tip-card__body');
+        var chev=card.querySelector('.tip-card__chevron');
+        if(body){body.classList.remove('open');}
+        if(chev){chev.classList.remove('open');}
+      }
+      if(show) visible++;
+    });
+    countEl.innerHTML='<strong>'+visible+'</strong> tip'+(visible!==1?'s':'');
+    noResults.classList.toggle('show',visible===0);
+  }
+
+  // ── Mobile nav ────────────────────────────────────
+  var navToggle=document.getElementById('nav-toggle');
+  var navLinks=document.getElementById('nav-links');
+  navToggle.addEventListener('click',function(){
+    var open=navLinks.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded',open);
+  });
+</script>
+</body>
+</html>
