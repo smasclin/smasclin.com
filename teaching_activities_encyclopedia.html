@@ -536,20 +536,18 @@
 
   <script>
   (function() {
-    const API_KEY   = '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';
-    const MODEL     = 'claude-haiku-4-5-20251001';
+    const WORKER_URL = 'https://smasclin-ai-proxy.smasclin.workers.dev';
+    const MODEL      = 'claude-haiku-4-5-20251001';
 
-    const overlay   = document.getElementById('ai-panel-overlay');
-    const panel     = document.getElementById('ai-panel');
-    const closeBtn  = document.getElementById('ai-panel-close');
-    const messages  = document.getElementById('ai-panel-messages');
-    const input     = document.getElementById('ai-panel-input');
-    const sendBtn   = document.getElementById('ai-panel-send');
-    const subtitle  = document.getElementById('ai-panel-subtitle');
+    const overlay  = document.getElementById('ai-panel-overlay');
+    const closeBtn = document.getElementById('ai-panel-close');
+    const messages = document.getElementById('ai-panel-messages');
+    const input    = document.getElementById('ai-panel-input');
+    const sendBtn  = document.getElementById('ai-panel-send');
+    const subtitle = document.getElementById('ai-panel-subtitle');
 
-    let history     = [];
-    let currentActivity = '';
-    let isStreaming = false;
+    let history  = [];
+    let isBusy   = false;
 
     const SYSTEM_PROMPT = `You are an expert in active learning pedagogy helping university instructors design personalized teaching scenarios. Your sole purpose is to help instructors visualize how to implement one specific teaching activity — which has already been chosen — in their own course context.
 
@@ -557,7 +555,7 @@ You have deep knowledge of 67 evidence-based active learning strategies includin
 
 Your workflow — ask ONE question at a time, wait for response before continuing:
 
-1. Ask about their course and specific topic. Vary your phrasing naturally each time — never use the same wording twice. Examples: "What course is this for, and what topic will you be covering?" / "Tell me about your class — what subject and what are students diving into?" / "Which course and topic are we designing this for?"
+1. Ask about their course and specific topic. Vary your phrasing naturally — never use the same wording twice. Examples: "What course is this for, and what topic will you be covering?" / "Tell me about your class — what subject and what are students diving into?" / "Which course and topic are we designing this for?"
 
 2. Ask about class size and modality. Vary phrasing. Examples: "Quick logistics — how many students, and are you in-person or online?" / "How big is the group, and how do they meet?" / "One more: class size and format — in-person, live online, or async?"
 
@@ -582,28 +580,21 @@ Guidelines:
     }
 
     function formatMessage(text) {
-      // Convert markdown-style formatting to HTML
       let html = escHtml(text);
-      // Bold **text**
       html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-      // Italic *text*
-      html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
-      // Scenario blocks
-      html = html.replace(/(🎯|👥|💡)\s*<em>([^<]+)<\/em>:\s*/g, '<div class="scenario-row"><span class="scenario-label">$1 $2:</span> ');
-      // Line breaks
+      html = html.replace(/\*([^*]+)\*/g, '<em>$1</em>');
       html = html.replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>');
       return '<p>' + html + '</p>';
     }
 
     function addMessage(role, text) {
-      const isAI = role === 'ai';
       const div = document.createElement('div');
       div.className = `ai-msg ai-msg--${role}`;
       div.innerHTML = `
-        <div class="ai-msg__avatar">${isAI ? 'AI' : 'You'}</div>
+        <div class="ai-msg__avatar">${role === 'ai' ? 'AI' : 'You'}</div>
         <div class="ai-msg__bubble">${formatMessage(text)}</div>`;
       messages.appendChild(div);
-      scrollToBottom();
+      messages.scrollTop = messages.scrollHeight;
       return div;
     }
 
@@ -613,16 +604,12 @@ Guidelines:
       wrap.id = 'ai-typing';
       wrap.innerHTML = `<div class="ai-msg__avatar">AI</div><div class="ai-typing"><span></span><span></span><span></span></div>`;
       messages.appendChild(wrap);
-      scrollToBottom();
+      messages.scrollTop = messages.scrollHeight;
     }
 
     function removeTyping() {
       const t = document.getElementById('ai-typing');
       if (t) t.remove();
-    }
-
-    function scrollToBottom() {
-      messages.scrollTop = messages.scrollHeight;
     }
 
     function setInputEnabled(enabled) {
@@ -631,170 +618,69 @@ Guidelines:
       if (enabled) input.focus();
     }
 
+    async function callClaude(maxTokens) {
+      const res = await fetch(WORKER_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: MODEL,
+          max_tokens: maxTokens,
+          system: SYSTEM_PROMPT,
+          messages: history
+        })
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.error?.message || `HTTP ${res.status}`);
+      }
+      const data = await res.json();
+      return data.content?.[0]?.text || '';
+    }
+
     async function sendMessage(userText) {
-      if (isStreaming) return;
-      isStreaming = true;
+      if (isBusy) return;
+      isBusy = true;
       setInputEnabled(false);
 
       history.push({ role: 'user', content: userText });
       addMessage('user', userText);
       input.value = '';
       input.style.height = 'auto';
-
       addTyping();
 
       try {
-        const res = await fetch('https://api.anthropic.com/v1/messages', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-api-key': API_KEY,
-            'anthropic-version': '2023-06-01',
-            'anthropic-dangerous-direct-browser-access': 'true'
-          },
-          body: JSON.stringify({
-            model: MODEL,
-            max_tokens: 1024,
-            system: SYSTEM_PROMPT,
-            messages: history,
-            stream: true
-          })
-        });
-
+        const reply = await callClaude(1024);
         removeTyping();
-
-        if (!res.ok) {
-          const err = await res.json();
-          addMessage('ai', `Sorry, something went wrong: ${err.error?.message || res.statusText}`);
-          isStreaming = false;
-          setInputEnabled(true);
-          return;
-        }
-
-        // Streaming response
-        const msgDiv = document.createElement('div');
-        msgDiv.className = 'ai-msg ai-msg--ai';
-        const avatarDiv = document.createElement('div');
-        avatarDiv.className = 'ai-msg__avatar';
-        avatarDiv.textContent = 'AI';
-        const bubbleDiv = document.createElement('div');
-        bubbleDiv.className = 'ai-msg__bubble';
-        msgDiv.appendChild(avatarDiv);
-        msgDiv.appendChild(bubbleDiv);
-        messages.appendChild(msgDiv);
-
-        const reader = res.body.getReader();
-        const decoder = new TextDecoder();
-        let fullText = '';
-
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-          const chunk = decoder.decode(value, { stream: true });
-          const lines = chunk.split('\n');
-          for (const line of lines) {
-            if (line.startsWith('data: ')) {
-              const data = line.slice(6).trim();
-              if (data === '[DONE]') break;
-              try {
-                const parsed = JSON.parse(data);
-                if (parsed.type === 'content_block_delta' && parsed.delta?.type === 'text_delta') {
-                  fullText += parsed.delta.text;
-                  bubbleDiv.innerHTML = formatMessage(fullText);
-                  scrollToBottom();
-                }
-              } catch {}
-            }
-          }
-        }
-
-        history.push({ role: 'assistant', content: fullText });
-
+        history.push({ role: 'assistant', content: reply });
+        addMessage('ai', reply);
       } catch (e) {
         removeTyping();
-        addMessage('ai', 'Sorry, I couldn\'t connect. Please check your internet connection and try again.');
+        addMessage('ai', `Sorry, something went wrong: ${e.message}`);
       }
 
-      isStreaming = false;
+      isBusy = false;
       setInputEnabled(true);
     }
 
     async function openPanel(activityName) {
-      currentActivity = activityName;
       history = [];
       messages.innerHTML = '';
       subtitle.textContent = activityName;
       input.value = '';
       setInputEnabled(false);
-
       overlay.setAttribute('aria-hidden', 'false');
       overlay.classList.add('open');
       document.body.style.overflow = 'hidden';
 
-      // Kick off conversation with activity pre-loaded
-      const opening = { role: 'user', content: `I want to use the activity: ${activityName}` };
-      history.push(opening);
-
+      history.push({ role: 'user', content: `I want to use the activity: ${activityName}` });
       addTyping();
+
       try {
-        const res = await fetch('https://api.anthropic.com/v1/messages', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-api-key': API_KEY,
-            'anthropic-version': '2023-06-01',
-            'anthropic-dangerous-direct-browser-access': 'true'
-          },
-          body: JSON.stringify({
-            model: MODEL,
-            max_tokens: 256,
-            system: SYSTEM_PROMPT,
-            messages: history,
-            stream: true
-          })
-        });
-
+        const reply = await callClaude(256);
         removeTyping();
-
-        const msgDiv = document.createElement('div');
-        msgDiv.className = 'ai-msg ai-msg--ai';
-        const avatarDiv = document.createElement('div');
-        avatarDiv.className = 'ai-msg__avatar';
-        avatarDiv.textContent = 'AI';
-        const bubbleDiv = document.createElement('div');
-        bubbleDiv.className = 'ai-msg__bubble';
-        msgDiv.appendChild(avatarDiv);
-        msgDiv.appendChild(bubbleDiv);
-        messages.appendChild(msgDiv);
-
-        const reader = res.body.getReader();
-        const decoder = new TextDecoder();
-        let fullText = '';
-
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-          const chunk = decoder.decode(value, { stream: true });
-          const lines = chunk.split('\n');
-          for (const line of lines) {
-            if (line.startsWith('data: ')) {
-              const data = line.slice(6).trim();
-              if (data === '[DONE]') break;
-              try {
-                const parsed = JSON.parse(data);
-                if (parsed.type === 'content_block_delta' && parsed.delta?.type === 'text_delta') {
-                  fullText += parsed.delta.text;
-                  bubbleDiv.innerHTML = formatMessage(fullText);
-                  scrollToBottom();
-                }
-              } catch {}
-            }
-          }
-        }
-
-        history.push({ role: 'assistant', content: fullText });
-
-      } catch(e) {
+        history.push({ role: 'assistant', content: reply });
+        addMessage('ai', reply);
+      } catch (e) {
         removeTyping();
         addMessage('ai', 'Sorry, something went wrong getting started. Please close and try again.');
       }
@@ -809,7 +695,6 @@ Guidelines:
       document.body.style.overflow = '';
     }
 
-    // Event listeners
     closeBtn.addEventListener('click', closePanel);
     overlay.addEventListener('click', e => { if (e.target === overlay) closePanel(); });
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closePanel(); });
@@ -827,13 +712,11 @@ Guidelines:
       }
     });
 
-    // Auto-resize textarea
     input.addEventListener('input', () => {
       input.style.height = 'auto';
       input.style.height = Math.min(input.scrollHeight, 120) + 'px';
     });
 
-    // Delegated click for all AI buttons
     document.getElementById('activities-container').addEventListener('click', e => {
       const btn = e.target.closest('.act-card__ai-btn');
       if (btn) openPanel(btn.dataset.activity);
