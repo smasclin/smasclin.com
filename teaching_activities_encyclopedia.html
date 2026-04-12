@@ -433,23 +433,414 @@
     applyFilters();
   });
 </script>
-  <script>
-    const PLAYLAB_URL = 'https://www.playlab.ai/project/cmnuip25h5ghsnc0wbnswnc6d';
+  <!-- ── AI Chat Panel ─────────────────────────────── -->
+  <div class="ai-panel-overlay" id="ai-panel-overlay" aria-hidden="true">
+    <div class="ai-panel" id="ai-panel" role="dialog" aria-modal="true" aria-labelledby="ai-panel-title">
 
-    // Delegated click handler for all AI buttons
+      <!-- Header -->
+      <div class="ai-panel__header">
+        <div class="ai-panel__header-left">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="ai-panel__icon"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <div>
+            <div class="ai-panel__title" id="ai-panel-title">Design with AI</div>
+            <div class="ai-panel__subtitle" id="ai-panel-subtitle"></div>
+          </div>
+        </div>
+        <button class="ai-panel__close" id="ai-panel-close" aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <!-- Messages -->
+      <div class="ai-panel__messages" id="ai-panel-messages" aria-live="polite" aria-atomic="false"></div>
+
+      <!-- Input -->
+      <div class="ai-panel__input-row">
+        <textarea
+          class="ai-panel__input"
+          id="ai-panel-input"
+          rows="1"
+          placeholder="Type your answer…"
+          aria-label="Your message"
+          disabled></textarea>
+        <button class="ai-panel__send" id="ai-panel-send" aria-label="Send" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <style>
+    /* ── AI Panel ───────────────────────────────────── */
+    .ai-panel-overlay{position:fixed;inset:0;background:rgba(13,34,51,0.5);backdrop-filter:blur(3px);z-index:500;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity 250ms}
+    .ai-panel-overlay.open{opacity:1;pointer-events:all}
+    .ai-panel{background:#fff;width:100%;max-width:680px;height:78vh;max-height:700px;border-radius:18px 18px 0 0;display:flex;flex-direction:column;transform:translateY(60px);transition:transform 320ms cubic-bezier(.22,1,.36,1);box-shadow:0 -8px 40px rgba(13,34,51,0.18);overflow:hidden}
+    .ai-panel-overlay.open .ai-panel{transform:translateY(0)}
+
+    .ai-panel__header{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;background:#0d2233;flex-shrink:0}
+    .ai-panel__header-left{display:flex;align-items:center;gap:0.75rem}
+    .ai-panel__icon{width:20px;height:20px;color:#FF7E00;flex-shrink:0}
+    .ai-panel__title{font-family:'Lora',serif;font-size:0.95rem;font-weight:700;color:#f0f8ff}
+    .ai-panel__subtitle{font-family:'DM Sans',sans-serif;font-size:0.72rem;color:rgba(240,248,255,0.5);margin-top:0.05rem}
+    .ai-panel__close{background:none;border:none;cursor:pointer;color:rgba(240,248,255,0.5);padding:0.3rem;border-radius:6px;display:flex;transition:color 200ms}
+    .ai-panel__close:hover{color:#f0f8ff}
+    .ai-panel__close svg{width:18px;height:18px}
+
+    .ai-panel__messages{flex:1;overflow-y:auto;padding:1.25rem;display:flex;flex-direction:column;gap:0.85rem;scroll-behavior:smooth}
+
+    .ai-msg{display:flex;gap:0.6rem;max-width:100%}
+    .ai-msg--ai{align-self:flex-start}
+    .ai-msg--user{align-self:flex-end;flex-direction:row-reverse}
+
+    .ai-msg__avatar{width:28px;height:28px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'DM Sans',sans-serif;font-size:0.65rem;font-weight:700;margin-top:2px}
+    .ai-msg--ai .ai-msg__avatar{background:#FF7E00;color:#fff}
+    .ai-msg--user .ai-msg__avatar{background:#e8f0f8;color:#4a6d8c}
+
+    .ai-msg__bubble{font-family:'DM Sans',sans-serif;font-size:0.875rem;line-height:1.6;padding:0.65rem 0.9rem;border-radius:12px;max-width:88%}
+    .ai-msg--ai .ai-msg__bubble{background:#f0f8ff;color:#0d2233;border-radius:4px 12px 12px 12px;border:1px solid #e8f0f8}
+    .ai-msg--user .ai-msg__bubble{background:#0d2233;color:#f0f8ff;border-radius:12px 4px 12px 12px}
+
+    .ai-msg__bubble strong{font-weight:700;color:#0d2233}
+    .ai-msg--user .ai-msg__bubble strong{color:#f0f8ff}
+    .ai-msg__bubble em{font-style:italic}
+    .ai-msg__bubble p{margin:0 0 0.5rem}
+    .ai-msg__bubble p:last-child{margin:0}
+
+    /* Scenario formatting */
+    .ai-msg__bubble .scenario-block{margin:0.6rem 0;padding:0.7rem 0.9rem;background:#fff;border:1px solid #d6e8f5;border-left:3px solid #FF7E00;border-radius:0 8px 8px 0}
+    .ai-msg__bubble .scenario-title{font-family:'Lora',serif;font-size:0.88rem;font-weight:700;color:#0d2233;margin-bottom:0.45rem}
+    .ai-msg__bubble .scenario-row{font-size:0.82rem;color:#1a3a52;margin-bottom:0.3rem;display:flex;gap:0.4rem}
+    .ai-msg__bubble .scenario-row:last-child{margin-bottom:0}
+    .ai-msg__bubble .scenario-label{font-weight:600;color:#FF7E00;flex-shrink:0}
+
+    .ai-typing{display:flex;gap:4px;padding:0.65rem 0.9rem;background:#f0f8ff;border:1px solid #e8f0f8;border-radius:4px 12px 12px 12px;width:fit-content}
+    .ai-typing span{width:6px;height:6px;border-radius:50%;background:#8aaccc;animation:typing 1.2s infinite}
+    .ai-typing span:nth-child(2){animation-delay:0.2s}
+    .ai-typing span:nth-child(3){animation-delay:0.4s}
+    @keyframes typing{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+
+    .ai-panel__input-row{display:flex;align-items:flex-end;gap:0.5rem;padding:0.85rem 1rem;border-top:1px solid #e8f0f8;background:#f8fcff;flex-shrink:0}
+    .ai-panel__input{flex:1;font-family:'DM Sans',sans-serif;font-size:0.88rem;border:1.5px solid #d6e8f5;border-radius:10px;padding:0.6rem 0.85rem;resize:none;outline:none;color:#0d2233;background:#fff;line-height:1.5;transition:border-color 200ms;max-height:120px;overflow-y:auto}
+    .ai-panel__input:focus{border-color:#FF7E00}
+    .ai-panel__input:disabled{background:#f0f8ff;color:#8aaccc;cursor:not-allowed}
+    .ai-panel__send{width:38px;height:38px;border-radius:10px;background:#FF7E00;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background 200ms,transform 150ms}
+    .ai-panel__send:hover:not(:disabled){background:#cc6500;transform:scale(1.05)}
+    .ai-panel__send:disabled{background:#d6e8f5;cursor:not-allowed}
+    .ai-panel__send svg{width:15px;height:15px;color:#fff}
+
+    @media(max-width:640px){
+      .ai-panel{height:88vh;max-height:none;border-radius:14px 14px 0 0}
+      .ai-msg__bubble{max-width:95%}
+    }
+  </style>
+
+  <script>
+  (function() {
+    const API_KEY   = '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';
+    const MODEL     = 'claude-haiku-4-5-20251001';
+
+    const overlay   = document.getElementById('ai-panel-overlay');
+    const panel     = document.getElementById('ai-panel');
+    const closeBtn  = document.getElementById('ai-panel-close');
+    const messages  = document.getElementById('ai-panel-messages');
+    const input     = document.getElementById('ai-panel-input');
+    const sendBtn   = document.getElementById('ai-panel-send');
+    const subtitle  = document.getElementById('ai-panel-subtitle');
+
+    let history     = [];
+    let currentActivity = '';
+    let isStreaming = false;
+
+    const SYSTEM_PROMPT = `You are an expert in active learning pedagogy helping university instructors design personalized teaching scenarios. Your sole purpose is to help instructors visualize how to implement one specific teaching activity — which has already been chosen — in their own course context.
+
+You have deep knowledge of 67 evidence-based active learning strategies including: Think-Pair-Share, Jigsaw Discussion, Muddiest Point, Poll/Clicker Question, Case Study, Debate, Brainstorm, Concept Map, Gallery Walk, Human Histogram, Minute Paper/Exit Ticket, 3-2-1 Survey, Entry Ticket/Do Now, Small Group Discussion, Think-Aloud Pair Problem Solving, Fishbowl, Snowball Discussion, Four Corners, Circular Response, Carousel Brainstorming, Affinity Mapping, Application Cards, Categories Grid, Chain Notes, Crowd and Crumple, Digital Whip Around, Final Course Reflection, Guided Reciprocal Peer Questioning, Human Tableau, Jumbled Sequence, One-Sentence Summary, Peer Review, Pro-Con Grid, Send-a-Problem, Team-Based Learning Quiz, The Big Paper, Word Journal, and many more.
+
+Your workflow — ask ONE question at a time, wait for response before continuing:
+
+1. Ask about their course and specific topic. Vary your phrasing naturally each time — never use the same wording twice. Examples: "What course is this for, and what topic will you be covering?" / "Tell me about your class — what subject and what are students diving into?" / "Which course and topic are we designing this for?"
+
+2. Ask about class size and modality. Vary phrasing. Examples: "Quick logistics — how many students, and are you in-person or online?" / "How big is the group, and how do they meet?" / "One more: class size and format — in-person, live online, or async?"
+
+3. After both answers, generate exactly 3 concrete scenarios showing distinct ways to run that activity with their topic. Format each as:
+
+**Scenario [#] — [Short evocative title]**
+🎯 *Setup:* [What the instructor says/does to launch it]
+👥 *Students:* [Exactly what students do, step by step]
+💡 *Payoff:* [The specific learning this produces]
+
+After the 3 scenarios, add one short varied line inviting iteration.
+
+Guidelines:
+- Never suggest a different activity
+- Never ask more than one question at a time
+- Ground every scenario in the instructor's actual topic
+- Warm, collegial tone — helpful peer, not a lecturer
+- Keep responses concise and practical`;
+
+    function escHtml(t) {
+      return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    function formatMessage(text) {
+      // Convert markdown-style formatting to HTML
+      let html = escHtml(text);
+      // Bold **text**
+      html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+      // Italic *text*
+      html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+      // Scenario blocks
+      html = html.replace(/(🎯|👥|💡)\s*<em>([^<]+)<\/em>:\s*/g, '<div class="scenario-row"><span class="scenario-label">$1 $2:</span> ');
+      // Line breaks
+      html = html.replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>');
+      return '<p>' + html + '</p>';
+    }
+
+    function addMessage(role, text) {
+      const isAI = role === 'ai';
+      const div = document.createElement('div');
+      div.className = `ai-msg ai-msg--${role}`;
+      div.innerHTML = `
+        <div class="ai-msg__avatar">${isAI ? 'AI' : 'You'}</div>
+        <div class="ai-msg__bubble">${formatMessage(text)}</div>`;
+      messages.appendChild(div);
+      scrollToBottom();
+      return div;
+    }
+
+    function addTyping() {
+      const wrap = document.createElement('div');
+      wrap.className = 'ai-msg ai-msg--ai';
+      wrap.id = 'ai-typing';
+      wrap.innerHTML = `<div class="ai-msg__avatar">AI</div><div class="ai-typing"><span></span><span></span><span></span></div>`;
+      messages.appendChild(wrap);
+      scrollToBottom();
+    }
+
+    function removeTyping() {
+      const t = document.getElementById('ai-typing');
+      if (t) t.remove();
+    }
+
+    function scrollToBottom() {
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    function setInputEnabled(enabled) {
+      input.disabled = !enabled;
+      sendBtn.disabled = !enabled;
+      if (enabled) input.focus();
+    }
+
+    async function sendMessage(userText) {
+      if (isStreaming) return;
+      isStreaming = true;
+      setInputEnabled(false);
+
+      history.push({ role: 'user', content: userText });
+      addMessage('user', userText);
+      input.value = '';
+      input.style.height = 'auto';
+
+      addTyping();
+
+      try {
+        const res = await fetch('https://api.anthropic.com/v1/messages', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': API_KEY,
+            'anthropic-version': '2023-06-01',
+            'anthropic-dangerous-direct-browser-access': 'true'
+          },
+          body: JSON.stringify({
+            model: MODEL,
+            max_tokens: 1024,
+            system: SYSTEM_PROMPT,
+            messages: history,
+            stream: true
+          })
+        });
+
+        removeTyping();
+
+        if (!res.ok) {
+          const err = await res.json();
+          addMessage('ai', `Sorry, something went wrong: ${err.error?.message || res.statusText}`);
+          isStreaming = false;
+          setInputEnabled(true);
+          return;
+        }
+
+        // Streaming response
+        const msgDiv = document.createElement('div');
+        msgDiv.className = 'ai-msg ai-msg--ai';
+        const avatarDiv = document.createElement('div');
+        avatarDiv.className = 'ai-msg__avatar';
+        avatarDiv.textContent = 'AI';
+        const bubbleDiv = document.createElement('div');
+        bubbleDiv.className = 'ai-msg__bubble';
+        msgDiv.appendChild(avatarDiv);
+        msgDiv.appendChild(bubbleDiv);
+        messages.appendChild(msgDiv);
+
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder();
+        let fullText = '';
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          const chunk = decoder.decode(value, { stream: true });
+          const lines = chunk.split('\n');
+          for (const line of lines) {
+            if (line.startsWith('data: ')) {
+              const data = line.slice(6).trim();
+              if (data === '[DONE]') break;
+              try {
+                const parsed = JSON.parse(data);
+                if (parsed.type === 'content_block_delta' && parsed.delta?.type === 'text_delta') {
+                  fullText += parsed.delta.text;
+                  bubbleDiv.innerHTML = formatMessage(fullText);
+                  scrollToBottom();
+                }
+              } catch {}
+            }
+          }
+        }
+
+        history.push({ role: 'assistant', content: fullText });
+
+      } catch (e) {
+        removeTyping();
+        addMessage('ai', 'Sorry, I couldn\'t connect. Please check your internet connection and try again.');
+      }
+
+      isStreaming = false;
+      setInputEnabled(true);
+    }
+
+    async function openPanel(activityName) {
+      currentActivity = activityName;
+      history = [];
+      messages.innerHTML = '';
+      subtitle.textContent = activityName;
+      input.value = '';
+      setInputEnabled(false);
+
+      overlay.setAttribute('aria-hidden', 'false');
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+
+      // Kick off conversation with activity pre-loaded
+      const opening = { role: 'user', content: `I want to use the activity: ${activityName}` };
+      history.push(opening);
+
+      addTyping();
+      try {
+        const res = await fetch('https://api.anthropic.com/v1/messages', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': API_KEY,
+            'anthropic-version': '2023-06-01',
+            'anthropic-dangerous-direct-browser-access': 'true'
+          },
+          body: JSON.stringify({
+            model: MODEL,
+            max_tokens: 256,
+            system: SYSTEM_PROMPT,
+            messages: history,
+            stream: true
+          })
+        });
+
+        removeTyping();
+
+        const msgDiv = document.createElement('div');
+        msgDiv.className = 'ai-msg ai-msg--ai';
+        const avatarDiv = document.createElement('div');
+        avatarDiv.className = 'ai-msg__avatar';
+        avatarDiv.textContent = 'AI';
+        const bubbleDiv = document.createElement('div');
+        bubbleDiv.className = 'ai-msg__bubble';
+        msgDiv.appendChild(avatarDiv);
+        msgDiv.appendChild(bubbleDiv);
+        messages.appendChild(msgDiv);
+
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder();
+        let fullText = '';
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          const chunk = decoder.decode(value, { stream: true });
+          const lines = chunk.split('\n');
+          for (const line of lines) {
+            if (line.startsWith('data: ')) {
+              const data = line.slice(6).trim();
+              if (data === '[DONE]') break;
+              try {
+                const parsed = JSON.parse(data);
+                if (parsed.type === 'content_block_delta' && parsed.delta?.type === 'text_delta') {
+                  fullText += parsed.delta.text;
+                  bubbleDiv.innerHTML = formatMessage(fullText);
+                  scrollToBottom();
+                }
+              } catch {}
+            }
+          }
+        }
+
+        history.push({ role: 'assistant', content: fullText });
+
+      } catch(e) {
+        removeTyping();
+        addMessage('ai', 'Sorry, something went wrong getting started. Please close and try again.');
+      }
+
+      setInputEnabled(true);
+      closeBtn.focus();
+    }
+
+    function closePanel() {
+      overlay.classList.remove('open');
+      overlay.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    // Event listeners
+    closeBtn.addEventListener('click', closePanel);
+    overlay.addEventListener('click', e => { if (e.target === overlay) closePanel(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closePanel(); });
+
+    sendBtn.addEventListener('click', () => {
+      const text = input.value.trim();
+      if (text) sendMessage(text);
+    });
+
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        const text = input.value.trim();
+        if (text) sendMessage(text);
+      }
+    });
+
+    // Auto-resize textarea
+    input.addEventListener('input', () => {
+      input.style.height = 'auto';
+      input.style.height = Math.min(input.scrollHeight, 120) + 'px';
+    });
+
+    // Delegated click for all AI buttons
     document.getElementById('activities-container').addEventListener('click', e => {
       const btn = e.target.closest('.act-card__ai-btn');
-      if (!btn) return;
-      const w = Math.min(520, screen.availWidth);
-      const h = Math.min(780, screen.availHeight);
-      const left = Math.round((screen.availWidth - w) / 2);
-      const top  = Math.round((screen.availHeight - h) / 2);
-      window.open(
-        PLAYLAB_URL,
-        'design_with_ai',
-        `width=${w},height=${h},left=${left},top=${top},resizable=yes,scrollbars=yes`
-      );
+      if (btn) openPanel(btn.dataset.activity);
     });
+
+  })();
   </script>
 </body>
 </html>
